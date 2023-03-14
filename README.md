@@ -18,8 +18,8 @@ SPI Card Pinout
 The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED displays.
 
 <table>
-<tr><th>Pin</th><th>Function</th><th>Wire Color</th><th>Notes</th></tr>
-<tr colspan="5"><td> (Image Goes here) </td></tr>
+<tr><th>SPI Pin</th><th>Function</th><th>Wire Color</th><th>Notes</th></tr>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/spi/1802-Mini-SPI-Connector.jpg"></td></tr>
 <tr><td>1</td><td rowspan="2">VCC</td><td rowspan="2">Red</td><td rowspan="2">+5V</td></tr>
 <tr><td>2</td></tr>
 <tr><td>3</td><td>MISO</td><td>Orange</td><td>(Not Used)</td></tr>
@@ -30,6 +30,7 @@ The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED
 <tr><td>8</td><td>RES</td><td>Grey</td><td>Reset</td></tr>
 <tr><td>9</td><td rowspan="2">GND</td><td rowspan="2">Black</td><td rowspan="2">Ground</td></tr>
 <tr><td>10</td></tr>
+</table>
 
 Supported Displays
 ------------------
