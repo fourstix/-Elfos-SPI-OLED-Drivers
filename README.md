@@ -32,11 +32,11 @@ The Kernel Video vector O_VIDEO and the API ID's are defined in the oled.inc inc
 * V_OLED_SHOW  - show the contents of a memory buffer on the display
 
 <table>
-<tr><th>API ID</th><th>Description</th><th colspan="2">Parameters</th></tr>
-<tr><td>V_OLED_TYPE</td><td>Get the OLED type string</td><td colspan="2">rf - Pointer to null terminated type string</td></tr>
+<tr><th>API ID</th><th>Description</th><th colspan="2">Notes</th></tr>
+<tr><td>V_OLED_TYPE</td><td>Get the OLED type string</td><td colspan="2">Returns rf - Pointer to null terminated type string</td></tr>
 <tr><td>V_OLED_INIT</td><td>Initialize the display</td><td colspan="2">(None)</td></tr>
 <tr><td>V_OLED_CLEAR</td><td>Clear the display</td><td colspan="2">(None)</td></tr>
-<tr><td>V_OLED_SHOWd</td><td>Update the display</td><td colspan="2">rf - Pointer to 1K byte buffer</td></tr>
+<tr><td>V_OLED_SHOWd</td><td>Update the display</td><td colspan="2">Input: rf - Pointer to 1K byte display buffer</td></tr>
 </table>
 
 OLED Demo Programs
