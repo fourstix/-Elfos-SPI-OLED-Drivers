@@ -13,6 +13,24 @@ Platform
 --------
 The programs were written to run displays from an [1802-Mini](https://github.com/dmadole/1802-Mini) by David Madole running with the [1802/Mini SPI adapter board](https://github.com/arhefner/1802-Mini-SPI-DMA) by Tony Hefner. These programs were assembled and linked with updated versions of the Asm-02 assembler and Link-02 linker by Mike Riley. The updated versions required to assemble and link this code are available at [arhefner/Asm-02](https://github.com/arhefner/Asm-02) and [arhefner/Link-02](https://github.com/arhefner/Link-02).
 
+SPI Card Pinout
+---------------
+The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED displays.
+
+<table>
+<tr><th>Pin</th><th>Function</th><th>Wire Color</th><th>Notes</th></tr>
+<tr colspan="5"><td> (Image Goes here) </td></tr>
+<tr><td>1</td><td rowspan="2">VCC</td><td rowspan="2">Red</td><td rowspan="2">+5V</td></tr>
+<tr><td>2</td></tr>
+<tr><td>3</td><td>MISO</td><td>Orange</td><td>(Not Used)</td></tr>
+<tr><td>4</td><td>MOSI</td><td>Yellow</td><td>Data Out</td></tr>
+<tr><td>5</td><td>CS</td><td>Green</td><td>Chip Select</td></tr>
+<tr><td>6</td><td>SCK</td><td>Blue</td><td>Serial Clock</td></tr>
+<tr><td>7</td><td>DC</td><td>Violet</td><td>Data/Command</td></tr>
+<tr><td>8</td><td>RES</td><td>Grey</td><td>Reset</td></tr>
+<tr><td>9</td><td rowspan="2">GND</td><td rowspan="2">Black</td><td rowspan="2">Ground</td></tr>
+<tr><td>10</td></tr>
+
 Supported Displays
 ------------------
 * SH1106 OLED display
