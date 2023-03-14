@@ -3,7 +3,9 @@ Elf/OS drivers for an 1802/Mini system with the 1802/Mini SPI adapter board conn
 
 Introduction
 ------------
-This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The OLED display drivers are based on Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried and on the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. 
+This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
+
+The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. 
 
 The graphics demo programs also use a common graphics library gfx_oled.lib.  The source code for the Elf/OS OLED graphics library is available on GitHub in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library).
 
@@ -35,9 +37,12 @@ The Kernel Video vector O_VIDEO and the API ID's are defined in the oled.inc inc
 <tr><td>V_OLED_INIT</td><td>Initialize the display</td><td colspan="2">(None)</td></tr>
 <tr><td>V_OLED_CLEAR</td><td>Clear the display</td><td colspan="2">(None)</td></tr>
 <tr><td>V_OLED_SHOWd</td><td>Update the display</td><td colspan="2">rf - Pointer to 1K byte buffer</td></tr>
+</table>
 
 OLED Demo Programs
-----------------
+------------------
+
+The appropriate OLED display driver should be loaded before running these programs. 
 
 ## clear
 **Usage:** clear    
@@ -102,10 +107,6 @@ Draws the classic text greeting on the display.
 **Usage:** textbg  
 Draws text strings on the display, using the transparent and opaque background options.
 
-## direct
-**Usage:** direct  
-Draw patterns by directly writing to bytes to the display.
-
 Repository Contents
 -------------------
 * **/src/demos/**  -- Source files for demo programs for OLED drivers
@@ -128,23 +129,23 @@ Repository Contents
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
 * **/src/include/**  -- Include files for the SH1106 display programs and the libraries.  
-  * sysconfig.inc - System configuration definitions for sh1106 programs.
+  * sysconfig.inc - System configuration definitions for programs.
   * sh1106.inc - SH1106 display value constants.
-  * sh1106_lib.inc - External definitions for routines in the SH1106 display library sh1106_oled.lib.
+  * oled.inc - External definitions for OLED display driver API.
   * gfx_lib.inc - External definitions for the Graphics OLED Library gfx_oled.lib.
   * ops.inc - Opcode definitions for Asm/02.
   * bios.inc - Bios definitions from Elf/OS
   * kernel.inc - Kernel definitions from Elf/OS
 * **/src/lib/**  -- Library files for the SH1106 display programs and OLED graphics demos.
-  * gfx_oled.lib - Assembled Graphics OLED library. The source files for library functions are in the */src/gfx/* directory.
-  * sh1106_oled.lib - Assembled SH1106 OLED display library. The source files for the library functions are in the */src/sh1106/* directory.
-* **/src/sh1106/**  -- Source files for the SH1106 OLED display library.
-  * *.asm - Assembly source files for library functions.
+  * gfx_oled.lib - Elf/OS Graphics OLED library. The source files for library functions are in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) repository.
+* **/src/sh1106/**  -- Source files for the SH1106 OLED display driver.
+  * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
   * build.bat - Windows batch file to assemble and create the sh1106_oled graphics library. Replace [Your_Path] with the correct path information for your system. 
   * clean.bat - Windows batch file to delete the sh1106_oled library and its associated files.    
-* **/bin/**  -- Binary files for SH1106 display programs.
-* **/lbr/**  -- Elf/OS library file with SH1106 OLED display programs.
-  * sh1106_oled.lbr - Extract the program files with the Elf/OS command *lbr e sh1106_oled*
+* **/bin/demo/**  -- Binary files for OLED display driver demo programs.
+* **/bin/sh1106/**  -- Binary file for SH1106 OLED display driver.
+* **/lbr/**  -- Elf/OS library file with OLED driver demo programs.
+  * oled_demo.lbr - Extract the program files with the Elf/OS command *lbr e oled_demo*
 * **/docs/**  -- Documentation for various displays
 * **/docs/sh1106/**  - Documentation files for the SH1106 display.
   * 1.3inch-SH1106-OLED.pdf - 1.3" SH1106 OLED Users Guide.
