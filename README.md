@@ -156,7 +156,7 @@ Draws text strings on the display, using the transparent and opaque background o
 
 Repository Contents
 -------------------
-* **/src/demos/**  -- Source files for demo programs for OLED drivers
+* **/src/demos/**  -- Source files for demo programs for OLED display drivers
   * clear.asm - Clear the display screen
   * splash.asm - Show the Adafruit splash screen on the display.
   * show.asm - Read an show a bitmap graphics image file on the display. 
@@ -184,12 +184,14 @@ Repository Contents
   * ops.inc - Opcode definitions for Asm/02.
   * bios.inc - Bios definitions from Elf/OS
   * kernel.inc - Kernel definitions from Elf/OS
-* **/src/lib/**  -- Library files for the SH1106 display programs and OLED graphics demos.
+* **/src/lib/**  -- Library file for the OLED graphics demos.
   * gfx_oled.lib - Elf/OS Graphics OLED library. The source files for library functions are in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) repository.
 * **/src/sh1106/**  -- Source files for the SH1106 OLED display driver.
   * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
-  * build.bat - Windows batch file to assemble and create the sh1106_oled graphics library. Replace [Your_Path] with the correct path information for your system. 
-  * clean.bat - Windows batch file to delete the sh1106_oled library and its associated files.    
+  * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.
+* **/src/ssd1306/**  -- Source files for the SSD1306 OLED display driver.
+  * ssd1306.asm - Assembly source file for the SSD1306 OLED display driver.
+  * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.      
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.
 * **/bin/sh1106/**  -- Binary file for SH1106 OLED display driver.
 * **/bin/ssd1306/**  -- Binary file for SSD1306 OLED display driver.
@@ -233,20 +235,16 @@ Copyright (c) 2004-2023 by Mike Riley
 Link/02 1802 Linker  
 Copyright (c) 2004-2023 by Mike Riley
 
-The Adafruit_SH1106 Library  
-Copyright (c) 2012-2023 by Adafruit Industries   
-Written by Limor Fried/Ladyada for Adafruit Industries. 
-
-The Adafruit_SSD1306 Library  
-Copyright (c) 2012-2023 by Adafruit Industries   
-Written by Limor Fried/Ladyada for Adafruit Industries. 
-
 The Adafruit_GFX Library  
 Copyright (c) 2012-2023 by Adafruit Industries   
 Written by Limor Fried/Ladyada for Adafruit Industries. 
 
 The Fast SH1106 Arduino Library  
 Copyright (c) 2013 by Arthur Liberman (ALCPU) 
+
+The Adafruit_SSD1306 Library  
+Copyright (c) 2012-2023 by Adafruit Industries   
+Written by Limor Fried/Ladyada for Adafruit Industries. 
 
 The 1802/Mini SPI Adapter Board   
 Copyright (c) 2022-2023 by Tony Hefner
