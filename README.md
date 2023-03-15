@@ -23,7 +23,7 @@ The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED
 <tr><td>1</td><td rowspan="2">VCC</td><td rowspan="2">Red</td><td rowspan="2">+5V</td></tr>
 <tr><td>2</td></tr>
 <tr><td>3</td><td>MISO</td><td>Orange</td><td>(Not Used)</td></tr>
-<tr><td>4</td><td>MOSI</td><td>Yellow</td><td>Data Out</td></tr>
+<tr><td>4</td><td>MOSI</td><td>Yellow</td><td>Serial Data Out</td></tr>
 <tr><td>5</td><td>CS</td><td>Green</td><td>Chip Select</td></tr>
 <tr><td>6</td><td>SCK</td><td>Blue</td><td>Serial Clock</td></tr>
 <tr><td>7</td><td>DC</td><td>Violet</td><td>Data/Command</td></tr>
@@ -39,6 +39,19 @@ Supported Displays
 
 SH1106 Display Pinout
 ---------------------
+The following wiring is used to connect the Elf/OS SPI Adapter board to the SH11106 OLED displays.
+
+<table>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/sh1106/SH1106_Wiring.jpg"></td></tr>
+<tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
+<tr><td>GND</td><td>Black</td><td>Ground</td><td>10</td></tr>
+<tr><td>VCC</td><td>Red</td><td>+5V</td><td>2</td></tr>
+<tr><td>CLK</td><td>Blue</td><td>Serial Clock</td><td>6</td></tr>
+<tr><td>MOSI</td><td>Yellow</td><td>Serial Data</td><td>4</td></tr>
+<tr><td>RES</td><td>Grey</td><td>Reset</td><td>8</td></tr>
+<tr><td>SDC</td><td>Violet</td><td>Data/Command</td><td>7</td></tr>
+<tr><td>CCS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
+</table>
 
 
 Display Library API
@@ -164,10 +177,13 @@ Repository Contents
 * **/bin/sh1106/**  -- Binary file for SH1106 OLED display driver.
 * **/lbr/**  -- Elf/OS library file with OLED driver demo programs.
   * oled_demo.lbr - Extract the program files with the Elf/OS command *lbr e oled_demo*
-* **/docs/**  -- Documentation for various displays
+* **/docs/**  -- Documentation for various OLED displays
 * **/docs/sh1106/**  - Documentation files for the SH1106 display.
   * 1.3inch-SH1106-OLED.pdf - 1.3" SH1106 OLED Users Guide.
   * sh1106_datasheet.pdf - SH1106 Display Datasheet
+* **/docs/sh1106/**  - Documentation files for the SH1106 display.
+  * SSD1306_User_Guide.pdf - SSD1306 OLED Users Guide.
+  * SSD1306.pdf - SSD1306 Display Datasheet
 * **/test/images/** -- Test graphic image files for the show program.
   * imp.img - Test graphic file image of an imp.
   * hres.img - Test graphic file image of a spaceship.
