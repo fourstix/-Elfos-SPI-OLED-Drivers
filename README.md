@@ -35,11 +35,11 @@ The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED
 Supported Displays
 ------------------
 * SH1106 OLED display
-* *TBD: ssd1306 display*
+* SSD1306 OLED display
 
 SH1106 Display Pinout
 ---------------------
-The following wiring is used to connect the Elf/OS SPI Adapter board to the SH11106 OLED displays.
+The following wiring is used to connect the Elf/OS SPI Adapter board to the SH1106 OLED displays.
 
 <table>
 <tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/sh1106/SH1106_Wiring.jpg"></td></tr>
@@ -53,6 +53,22 @@ The following wiring is used to connect the Elf/OS SPI Adapter board to the SH11
 <tr><td>CCS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
 </table>
 
+SSD1306 Display Pinout
+----------------------
+The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1306 OLED displays.
+
+<table>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/ssd1306/SSD1306_Wiring.jpg"></td></tr>
+<tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
+<tr><td>Data</td><td>Yellow</td><td>Serial Data</td><td>4</td></tr>
+<tr><td>Clk</td><td>Blue</td><td>Serial Clock</td><td>6</td></tr>
+<tr><td>SA0/DC</td><td>Violet</td><td>Data/Command</td><td>7</td></tr>
+<tr><td>RST</td><td>Grey</td><td>Reset</td><td>8</td></tr>
+<tr><td>CS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
+<tr><td>3.3v</td><td colspan="3">(No Connection)</td></tr>
+<tr><td>Vin</td><td>Red</td><td>+5V</td><td>2</td></tr>
+<tr><td>GND</td><td>Black</td><td>Ground</td><td>10</td></tr>
+</table>
 
 Display Library API
 ---------------------
