@@ -5,7 +5,7 @@ Introduction
 ------------
 This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
 
-The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. 
+The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306).
 
 The graphics demo programs also use a common graphics library gfx_oled.lib.  The source code for the Elf/OS OLED graphics library is available on GitHub in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library).
 
@@ -63,11 +63,11 @@ The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1
 <tr><td>Data</td><td>Yellow</td><td>Serial Data</td><td>4</td></tr>
 <tr><td>Clk</td><td>Blue</td><td>Serial Clock</td><td>6</td></tr>
 <tr><td>SA0/DC</td><td>Violet</td><td>Data/Command</td><td>7</td></tr>
-<tr><td>RST</td><td>Grey</td><td>Reset</td><td>8</td></tr>
+<tr><td>Rst</td><td>Grey</td><td>Reset</td><td>8</td></tr>
 <tr><td>CS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
 <tr><td>3.3v</td><td colspan="3">(No Connection)</td></tr>
 <tr><td>Vin</td><td>Red</td><td>+5V</td><td>2</td></tr>
-<tr><td>GND</td><td>Black</td><td>Ground</td><td>10</td></tr>
+<tr><td>Gnd</td><td>Black</td><td>Ground</td><td>10</td></tr>
 </table>
 
 Display Library API
@@ -178,6 +178,7 @@ Repository Contents
 * **/src/include/**  -- Include files for the SH1106 display programs and the libraries.  
   * sysconfig.inc - System configuration definitions for programs.
   * sh1106.inc - SH1106 display value constants.
+  * ssd1306.inc - SSD1306 display value constants.
   * oled.inc - External definitions for OLED display driver API.
   * gfx_lib.inc - External definitions for the Graphics OLED Library gfx_oled.lib.
   * ops.inc - Opcode definitions for Asm/02.
@@ -191,6 +192,7 @@ Repository Contents
   * clean.bat - Windows batch file to delete the sh1106_oled library and its associated files.    
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.
 * **/bin/sh1106/**  -- Binary file for SH1106 OLED display driver.
+* **/bin/ssd1306/**  -- Binary file for SSD1306 OLED display driver.
 * **/lbr/**  -- Elf/OS library file with OLED driver demo programs.
   * oled_demo.lbr - Extract the program files with the Elf/OS command *lbr e oled_demo*
 * **/docs/**  -- Documentation for various OLED displays
@@ -232,6 +234,10 @@ Link/02 1802 Linker
 Copyright (c) 2004-2023 by Mike Riley
 
 The Adafruit_SH1106 Library  
+Copyright (c) 2012-2023 by Adafruit Industries   
+Written by Limor Fried/Ladyada for Adafruit Industries. 
+
+The Adafruit_SSD1306 Library  
 Copyright (c) 2012-2023 by Adafruit Industries   
 Written by Limor Fried/Ladyada for Adafruit Industries. 
 
