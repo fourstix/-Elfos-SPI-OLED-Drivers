@@ -252,7 +252,10 @@ Copyright (c) 2022-2023 by Tony Hefner
 The 1802-Mini Microcomputer Hardware   
 Copyright (c) 2020-2023 by David Madole
 
-Many thanks to the original authors for making their designs and code available as open source.
+The 1802-Mini SPI Connector Pinout Image
+Copyright (c) 2023 by Bernie Murphy
+ 
+Many thanks to the original authors for making their designs and code available as open source, and a big thank you to Bernie Murphy for his testing, code contributions and suggestions.
  
 This code, firmware, and software is released under the [MIT License](http://opensource.org/licenses/MIT).
 
