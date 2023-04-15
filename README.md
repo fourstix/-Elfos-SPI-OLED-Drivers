@@ -5,7 +5,7 @@ Introduction
 ------------
 This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
 
-The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306).The ssd1309 OLED display driver is based on code from the [OLED Display Library](https://github.com/Sylaina/oled-display).
+The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306). The ssd1309 OLED display driver is based on code from the [OLED Display Library](https://github.com/Sylaina/oled-display).
 
 
 The graphics demo programs also use a common graphics library gfx_oled.lib.  The source code for the Elf/OS OLED graphics library is available on GitHub in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library).
@@ -265,18 +265,18 @@ The Adafruit_SSD1306 Library
 Copyright (c) 2012-2023 by Adafruit Industries   
 Written by Limor Fried/Ladyada for Adafruit Industries. 
 
-The OLED-Display Library
-Copyright 2016 Skie-Systems
-Written by Michael Köhler
+The OLED-Display Library  
+Copyright (c) 2016 Skie-Systems  
+Written by Michael Köhler  
 
 The 1802/Mini SPI Adapter Board   
 Copyright (c) 2022-2023 by Tony Hefner
 
 The 1802-Mini Microcomputer Hardware   
-Copyright (c) 2020-2023 by David Madole
+Copyright (c) 2020-2023 by David Madole  
 
 The 1802-Mini SPI Connector Pinout Diagram  
-Copyright (c) 2023 by Bernie Murphy
+Copyright (c) 2023 by Bernie Murphy  
  
 Many thanks to the original authors for making their designs and code available as open source, and a big thank you to Bernie Murphy for his testing, code contributions and suggestions.
  
