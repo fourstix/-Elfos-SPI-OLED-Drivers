@@ -5,7 +5,8 @@ Introduction
 ------------
 This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
 
-The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306).
+The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306). The ssd1309 OLED display driver is based on code from the [OLED Display Library](https://github.com/Sylaina/oled-display).
+
 
 The graphics demo programs also use a common graphics library gfx_oled.lib.  The source code for the Elf/OS OLED graphics library is available on GitHub in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library).
 
@@ -36,6 +37,7 @@ Supported Displays
 ------------------
 * SH1106 OLED display
 * SSD1306 OLED display
+* SSD1309 OLED display
 
 SH1106 Display Pinout
 ---------------------
@@ -68,6 +70,22 @@ The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1
 <tr><td>3.3v</td><td colspan="3">(No Connection)</td></tr>
 <tr><td>Vin</td><td>Red</td><td>+5V</td><td>2</td></tr>
 <tr><td>Gnd</td><td>Black</td><td>Ground</td><td>10</td></tr>
+</table>
+
+SSD1309 Display Pinout
+----------------------
+The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1309 OLED displays.
+
+<table>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/ssd1309/SSD1309_Wiring.jpg"></td></tr>
+<tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
+<tr><td>Gnd</td><td>Black</td><td>Ground</td><td>10</td></tr>
+<tr><td>VCC</td><td>Red</td><td>+5V</td><td>2</td></tr>
+<tr><td>SCK</td><td>Blue</td><td>Serial Clock</td><td>6</td></tr>
+<tr><td>SDA</td><td>Yellow</td><td>Serial Data</td><td>4</td></tr>
+<tr><td>RES</td><td>Grey</td><td>Reset</td><td>8</td></tr>
+<tr><td>DC</td><td>Violet</td><td>Data/Command</td><td>7</td></tr>
+<tr><td>CS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
 </table>
 
 Display Library API
@@ -179,6 +197,7 @@ Repository Contents
   * sysconfig.inc - System configuration definitions for programs.
   * sh1106.inc - SH1106 display value constants.
   * ssd1306.inc - SSD1306 display value constants.
+  * ssd1309.inc - SSD1309 display value constants.
   * oled.inc - External definitions for OLED display driver API.
   * gfx_lib.inc - External definitions for the Graphics OLED Library gfx_oled.lib.
   * ops.inc - Opcode definitions for Asm/02.
@@ -186,24 +205,24 @@ Repository Contents
   * kernel.inc - Kernel definitions from Elf/OS
 * **/src/lib/**  -- Library file for the OLED graphics demos.
   * gfx_oled.lib - Elf/OS Graphics OLED library. The source files for library functions are in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) repository.
-* **/src/sh1106/**  -- Source files for the SH1106 OLED display driver.
+* **/src/drvr/**  -- Source files for the OLED display drivers.
   * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
-  * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.
-* **/src/ssd1306/**  -- Source files for the SSD1306 OLED display driver.
   * ssd1306.asm - Assembly source file for the SSD1306 OLED display driver.
+  * ssd1309.asm - Assembly source file for the SSD1309 OLED display driver.
   * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.      
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.
-* **/bin/sh1106/**  -- Binary file for SH1106 OLED display driver.
-* **/bin/ssd1306/**  -- Binary file for SSD1306 OLED display driver.
+* **/bin/drvr/**  -- Binary files for OLED display drivers.
 * **/lbr/**  -- Elf/OS library file with OLED driver demo programs.
   * oled_demo.lbr - Extract the program files with the Elf/OS command *lbr e oled_demo*
 * **/docs/**  -- Documentation for various OLED displays
 * **/docs/sh1106/**  - Documentation files for the SH1106 display.
   * 1.3inch-SH1106-OLED.pdf - 1.3" SH1106 OLED Users Guide.
   * sh1106_datasheet.pdf - SH1106 Display Datasheet
-* **/docs/sh1106/**  - Documentation files for the SH1106 display.
+* **/docs/ssd1306/**  - Documentation files for the SSD1306 display.
   * SSD1306_User_Guide.pdf - SSD1306 OLED Users Guide.
   * SSD1306.pdf - SSD1306 Display Datasheet
+* **/docs/ssd1309/**  - Documentation files for the SSD1309 display.
+  * SSD1309.pdf - SSD1306 Display Datasheet
 * **/test/images/** -- Test graphic image files for the show program.
   * imp.img - Test graphic file image of an imp.
   * hres.img - Test graphic file image of a spaceship.
@@ -246,14 +265,18 @@ The Adafruit_SSD1306 Library
 Copyright (c) 2012-2023 by Adafruit Industries   
 Written by Limor Fried/Ladyada for Adafruit Industries. 
 
+The OLED-Display Library  
+Copyright (c) 2016 Skie-Systems  
+Written by Michael Köhler  
+
 The 1802/Mini SPI Adapter Board   
 Copyright (c) 2022-2023 by Tony Hefner
 
 The 1802-Mini Microcomputer Hardware   
-Copyright (c) 2020-2023 by David Madole
+Copyright (c) 2020-2023 by David Madole  
 
 The 1802-Mini SPI Connector Pinout Diagram  
-Copyright (c) 2023 by Bernie Murphy
+Copyright (c) 2023 by Bernie Murphy  
  
 Many thanks to the original authors for making their designs and code available as open source, and a big thank you to Bernie Murphy for his testing, code contributions and suggestions.
  
