@@ -19,7 +19,7 @@ SPI Card Pinout
 The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED displays.
 
 <table>
-<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/spi/1802-Mini-SPI-Connector.jpg"></td></tr>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/docs/spi/1802-Mini-SPI-Connector.jpg"></td></tr>
 <tr><th>Pin</th><th>Function</th><th>Wire Color</th><th>Notes</th></tr>
 <tr><td>1</td><td rowspan="2">VCC</td><td rowspan="2">Red</td><td rowspan="2">+5V</td></tr>
 <tr><td>2</td></tr>
@@ -44,7 +44,7 @@ SH1106 Display Pinout
 The following wiring is used to connect the Elf/OS SPI Adapter board to the SH1106 OLED displays.
 
 <table>
-<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/sh1106/SH1106_Wiring.jpg"></td></tr>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/docs/sh1106/SH1106_Wiring.jpg"></td></tr>
 <tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
 <tr><td>GND</td><td>Black</td><td>Ground</td><td>10</td></tr>
 <tr><td>VCC</td><td>Red</td><td>+5V</td><td>2</td></tr>
@@ -60,7 +60,7 @@ SSD1306 Display Pinout
 The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1306 OLED displays.
 
 <table>
-<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/ssd1306/SSD1306_Wiring.jpg"></td></tr>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/docs/ssd1306/SSD1306_Wiring.jpg"></td></tr>
 <tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
 <tr><td>Data</td><td>Yellow</td><td>Serial Data</td><td>4</td></tr>
 <tr><td>Clk</td><td>Blue</td><td>Serial Clock</td><td>6</td></tr>
@@ -77,7 +77,7 @@ SSD1309 Display Pinout
 The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1309 OLED displays.
 
 <table>
-<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_update/docs/ssd1309/SSD1309_Wiring.jpg"></td></tr>
+<tr ><td colspan="4"><img src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/docs/ssd1309/SSD1309_Wiring.jpg"></td></tr>
 <tr><th>OLED Pin</th><th>Wire Color</th><th>Function</th><th>SPI Pin</th></tr>
 <tr><td>Gnd</td><td>Black</td><td>Ground</td><td>10</td></tr>
 <tr><td>VCC</td><td>Red</td><td>+5V</td><td>2</td></tr>
