@@ -175,7 +175,7 @@ Draws the classic text greeting on the display.
 Draws text strings on the display, using the normal, inverse and overlay text options.
 
 ## align
-**Usage:** textbg  
+**Usage:** align  
 Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment.
 
 Repository Contents
@@ -183,7 +183,7 @@ Repository Contents
 * **/src/demos/**  -- Source files for demo programs for OLED display drivers
   * clear.asm - Clear the display screen
   * splash.asm - Show the Adafruit splash screen on the display.
-  * show.asm - Read an show a bitmap graphics image file on the display. 
+  * show.asm - Read an show a bitmap graphics image file on the display.
   * pixiecvt.asm - Conversion routines used to read and display a graphics image.
   * bitmaps.asm - Demo program to draw Adafruit flower bitmaps on the display screen.
   * blocks.asm - Demo program to draw filled rectangles on the display screen. 
