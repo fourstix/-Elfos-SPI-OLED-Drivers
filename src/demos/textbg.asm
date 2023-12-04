@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -43,65 +43,74 @@ main:       lda   ra                    ; move past any spaces
             lbz   good                  ; jump if no argument given
             call  o_inmsg               ; otherwise display usage message
             db    'Usage: textbg',10,13,0
-            RETURN                      ; and return to os
+            return                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer           ; clear buffer
-                  
-            ;---- setup the display
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
+            lbdf  error
 
             
             ;---- set up background pattern
-            LOAD  r7, $0810             ; draw first block 
-            LOAD  r8, $3060             
-            CALL  draw_block
+            load  r7, $0810             ; draw first block 
+            load  r8, $3060             
+            ldi   GFX_SET
+            phi   r9
+            call  gfx_fill_rect
             lbdf  error
 
-            LOAD  r7, $1020             ; clear a block inside
-            LOAD  r8, $2040             
-            CALL  clear_block
+            load  r7, $1020             ; clear a block inside
+            load  r8, $2040             
+            ldi   GFX_CLEAR
+            phi   r9
+            call  gfx_fill_rect
             lbdf  error
 
 
-            LOAD  r7, $1828             ; draw last block
-            LOAD  r8, $1030             
-            CALL  draw_block
+            load  r7, $1828             ; draw last block
+            load  r8, $1030             
+            ldi   GFX_SET
+            phi   r9
+            call  gfx_fill_rect
             lbdf  error
 
-            ;---- draw text
-            ldi   GFX_BG_TRANSPARENT    ; background shows through
+            ;---- draw overlay text
+            ldi   GFX_TXT_OVERLAY       ; background shows through, text inverts bits
             phi   r9    
           
-            LOAD  r7, $0819             ;---- Set R7 to overlap block
-            LOAD  r8, transprnt
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            CALL  draw_string
+            load  r7, $0819             ;---- Set R7 to overlap block
+            load  r8, overlay
+            call  oled_print_string
 
             ;---- draw text with background cleared, text wraps
-            LOAD  r7, $2C38             ;---- Set R7 near middle of line 44
-            LOAD  r8, opaque            ;---- set string buffer
-            ldi   GFX_BG_OPAQUE         ; background cleared
+            load  r7, $2C38             ;---- Set R7 near middle of line 44
+            load  r8, normal            ;---- set string buffer
+            ldi   GFX_TXT_NORMAL        ; background cleared, text set
             phi   r9    
             
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            CALL  draw_string            ; draw character   
-            
-show:       LOAD  rf, buffer            ; show updated display
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            call  oled_print_string
 
-            CLC
-            RETURN                      ; return to Elf/OS
-                      
-error:      CALL o_inmsg
-            db 'Error drawing string.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
+
+            ;---- draw text with background set
+            load  r7, $1A00             ;---- Set R7 at beginning of line 26
+            load  r8, inverse           ;---- set string buffer
+            ldi   GFX_TXT_INVERSE       ; background set, text cleared
+            phi   r9    
             
-transprnt: db 'Transparent text background.',0
-opaque:    db 'Opaque text background.',0            
-                           
-buffer:     ds    BUFFER_SIZE
+            call  oled_print_string
+            
+show:       call  oled_init_display     ; setup the display
+            call  oled_update_display   ; update the display
+
+            clc
+            return                      ; return to Elf/OS
+                      
+error:      call o_inmsg
+            db 'Error drawing string.',10,13,0
+            abend                       ; return to Elf/OS with an error code
+            
+overlay:    db 'Transparent text background.',0
+normal:     db 'Normal text background.',0            
+inverse:    db 'Inverse text background.',0                            
             end   start

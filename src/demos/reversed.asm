@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a set of reversed (black on white) lines on an OLED display using the  
-; SH1106 controller chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a set of reversed (black on white) lines on an OLED display
+; connected to the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+2          ; Month, 80h offset means extended info
-            db      19             ; Day
+date:       db      80h+11         ; Month, 80h offset means extended info
+            db      29             ; Day
             dw      2023           ; year
            
             ; Current build number
-build:      dw      2              ; build
+build:      dw      3              ; build
             db      'Copyright 2023 by Gaston Williams',0
 
 
@@ -44,67 +44,67 @@ main:       lda   ra                    ; move past any spaces
             ; otherwise display usage message
             call  o_inmsg               
             db    'Usage: reversed',10,13,0
-            RETURN                      ; and return to os
+            return                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  fill_buffer           ; fill buffer for all white background
+good:       call  oled_check_driver
+            lbdf  error
             
-            LOAD  r7, $0000            ; clear top border
-            LOAD  r8, $007F             
-            CALL  clear_line
-            lbdf  error
-
-            LOAD  r7, $0000            ; clear left border
-            LOAD  r8, $3F00             
-            CALL  clear_line
-            lbdf  error
-
-
-            LOAD  r7, $007F            ; clear right border
-            LOAD  r8, $3F7F             
-            CALL  clear_line
-            lbdf  error
-
-
-            LOAD  r7, $3F00            ; clear bottom border
-            LOAD  r8, $3F7F             
-            CALL  clear_line
-            lbdf  error
-
-            LOAD  r7, $0000            ; clear diagonals
-            LOAD  r8, $3F7F             
-            CALL  clear_line
-            lbdf  error
-
-            LOAD  r7, $007F            ; clear diagonals
-            LOAD  r8, $3F00             
-            CALL  clear_line
-            lbdf  error
-
-            LOAD  r7, $0040            ; clear vertical line
-            LOAD  r8, $3F40             
-            CALL  clear_line
-            lbdf  error
-
-            LOAD  r7, $2000            ; clear horizontal line
-            LOAD  r8, $207F             
-            CALL  clear_line
-            lbdf  error
-
-            ;---- udpate the display
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
+            call  oled_fill_buffer      ; fill buffer for all white background
             
-            LOAD  rf, buffer
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            ldi   GFX_CLEAR            ; set color to clear line
+            phi   r9             
 
-done:       CLC   
-            RETURN
+            load  r7, $0000            ; clear top border
+            load  r8, $007F
+            call  gfx_draw_line
+            lbdf  error
+
+            load  r7, $0000            ; clear left border
+            load  r8, $3F00             
+            call  gfx_draw_line
+            lbdf  error
+
+
+            load  r7, $007F            ; clear right border
+            load  r8, $3F7F             
+            call  gfx_draw_line
+            lbdf  error
+
+
+            load  r7, $3F00            ; clear bottom border
+            load  r8, $3F7F             
+            call  gfx_draw_line
+            lbdf  error
+
+            load  r7, $0000            ; clear diagonals
+            load  r8, $3F7F             
+            call  gfx_draw_line
+            lbdf  error
+
+            load  r7, $007F            ; clear diagonals
+            load  r8, $3F00             
+            call  gfx_draw_line
+            lbdf  error
+
+            load  r7, $0040            ; clear vertical line
+            load  r8, $3F40             
+            call  gfx_draw_line
+            lbdf  error
+
+            load  r7, $2000            ; clear horizontal line
+            load  r8, $207F             
+            call  gfx_draw_line
+            lbdf  error
+
+            ;---- update display
+            call  oled_init_display
+            call  oled_update_display
+
+done:       clc   
+            return
             
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing line.',10,13,0
-            ABEND
+            abend
             
-buffer:     ds    BUFFER_SIZE
             end   start

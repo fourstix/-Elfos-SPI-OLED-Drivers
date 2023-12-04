@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a set of lines on an OLED display using the SH1106 controller chip 
-; connected to port 0 of the 1802/Mini SPI interface.
+; Display a set of lines on an OLED display connected to
+; the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+3          ; Month, 80h offset means extended info
-            db      13             ; Day
+date:       db      80h+11         ; Month, 80h offset means extended info
+            db      28             ; Day
             dw      2023           ; year
            
             ; Current build number
-build:      dw      2              ; build
+build:      dw      3              ; build
             db      'Copyright 2023 by Gaston Williams',0
 
 
@@ -46,65 +46,64 @@ main:       lda   ra                    ; move past any spaces
             ldi   $0a
             RETURN                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; clear out buffer
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
+            lbdf  error
+
+            ldi    GFX_SET              ; set color 
+            phi    r9
             
-            LOAD  r7, $0000             ; draw top border
-            LOAD  r8, $007F             
-            CALL  draw_line
+            load  r7, $0000             ; draw top border
+            load  r8, $007F             
+            call  gfx_draw_line
+            lbdf  error
+                        
+            load  r7, $0000             ; draw left border
+            load  r8, $3F00             
+            call  gfx_draw_line
             lbdf  error
 
-            LOAD  r7, $0000             ; draw left border
-            LOAD  r8, $3F00             
-            CALL  draw_line
+            load  r7, $007F             ; draw right border
+            load  r8, $3F7F             
+            call  gfx_draw_line
             lbdf  error
 
-
-            LOAD  r7, $007F             ; draw right border
-            LOAD  r8, $3F7F             
-            CALL  draw_line
+            load  r7, $3F00             ; draw bottom border
+            load  r8, $3F7F             
+            call  gfx_draw_line
             lbdf  error
 
-
-            LOAD  r7, $3F00             ; draw bottom border
-            LOAD  r8, $3F7F             
-            CALL  draw_line
+            load  r7, $0000             ; draw diagonals
+            load  r8, $3F7F             
+            call  gfx_draw_line
             lbdf  error
 
-            LOAD  r7, $0000             ; draw diagonals
-            LOAD  r8, $3F7F             
-            CALL  draw_line
+            load  r7, $007F             ; draw diagonals
+            load  r8, $3F00             
+            call  gfx_draw_line
             lbdf  error
 
-            LOAD  r7, $007F             ; draw diagonals
-            LOAD  r8, $3F00             
-            CALL  draw_line
+            load  r7, $0040             ; draw vertical line
+            load  r8, $3F40             
+            call  gfx_draw_line
             lbdf  error
 
-            LOAD  r7, $0040             ; draw vertical line
-            LOAD  r8, $3F40             
-            CALL  draw_line
-            lbdf  error
-
-            LOAD  r7, $2000             ; draw horizontal line
-            LOAD  r8, $207F             
-            CALL  draw_line
+            load  r7, $2000             ; draw horizontal line
+            load  r8, $207F             
+            call  gfx_draw_line
             lbdf  error
 
             ;---- udpate the display
-            ldi   V_OLED_INIT  
-            CALL  O_VIDEO          
-            
-            LOAD  rf, buffer
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            call  oled_init_display
+            call  oled_update_display
 
-done:       CLC   
-            RETURN
+done:       clc   
+            return
             
-error:      CALL o_inmsg
+error:      call o_inmsg
             db  'Error drawing line.',10,13,0
-            ABEND                       ; return to Elf/OS with error code
+            abend                       ; return to Elf/OS with error code
             
-buffer:     ds    BUFFER_SIZE
             end   start

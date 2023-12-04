@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display the Adafruit graphics splash screen on the OLED display using the
-; SH1106 controller chip connected to port 0 of the 1802/Mini SPI interface.
+; Display the Adafruit graphics splash screen on an OLED display
+; connected to the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,10 +11,11 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
 #include ../include/oled.inc
+#include ../include/oled_spi_lib.inc
 
             org   2000h
 start:          br    main
@@ -22,12 +23,12 @@ start:          br    main
 
                 ; Build information
                 ; Build date
-date:           db      80h+3         ; Month, 80h offset means extended info
-                db      13            ; Day
+date:           db      80h+11        ; Month, 80h offset means extended info
+                db      27            ; Day
                 dw      2023          ; year
            
                 ; Current build number
-build:          dw      2             ; build
+build:          dw      3             ; build
                 db      'Copyright 2023 by Gaston Williams',0
 
 
@@ -40,20 +41,20 @@ main:           lda   ra              ; move past any spaces
                 ldn   ra              ; get byte
                 lbz   show            ; jump if no argument given
                 ; otherwise display usage message
-                CALL  O_INMSG         
+                call  O_INMSG         
                 db    'Usage: splash',10,13,0
                 RTN                   ; and return to os
 
-show:           CALL  check_oled_driver
+show:           call  oled_check_driver
                 lbdf  error
                 ldi   V_OLED_INIT
-                CALL  O_VIDEO
-                LOAD  rf, buffer      ; point rf to display buffer
+                call  O_VIDEO
+                load  rf, buffer      ; point rf to display buffer
                 ldi   V_OLED_SHOW
-                CALL  O_VIDEO
-                RTN                   ; return to Elf/OS
+                call  O_VIDEO
+                return                ; return to Elf/OS
                 
-error:          ABEND                 ; return to Elf/OS with error code                
+error:          abend                 ; return to Elf/OS with error code                
                 
                 
             

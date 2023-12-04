@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a characters on an OLED display using the SH1106 controller 
-; chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a characters on an OLED display connected to
+; the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,13 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
+
 
             org   2000h
 start:      br    main
@@ -24,12 +25,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+3          ; Month, 80h offset means extended info
-            db    13             ; Day
+date:       db    80h+12         ; Month, 80h offset means extended info
+            db    2              ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    2              ; build
+build:      dw    3              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -44,49 +45,42 @@ main:       lda   ra                    ; move past any spaces
             ; otherwise display usage message
             call  o_inmsg               
             db    'Usage: charset',10,13,0
-            RETURN                      ; Return to Elf/OS
+            return                      ; Return to Elf/OS
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; clear buffer
-                  
-            ;---- setup the display
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
-
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
+            lbdf  error
 
             ldi   96                    ; 96 printable characters
             plo   rc                    ; save in counter
             
             ;---- draw text
-            ldi   GFX_BG_TRANSPARENT    ; background shows through
+            ldi   GFX_TXT_NORMAL       ; clear background
             phi   r9    
           
-            LOAD  r7, 0                 ;---- Set R7 at origin (0,0)
+            load  r7, 0                 ;---- Set R7 at origin (0,0)
             ldi   ' '                   ; set up first character
             plo   r9
 
-            LOAD  rf, buffer            ; point rf to display buffer                        
-
 draw_ch:    glo   rc                    ; get counter
             lbz   show                  ; when done, show display
-             
-            CALL  draw_char             ; draw character   
+                          
+            call  oled_print_char       ; draw character   
 
             inc   r9                    ; go to next character
             dec   rc                    ; count down
             lbr   draw_ch               ; keep going until all chars drawn
             
-show:       LOAD  rf, buffer            ; show updated display
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+show:       call  oled_init_display     ; setup the display
+            call  oled_update_display   ; update the display
 
-            CLC
-            RETURN                      ; return to Elf/OS
+            clc
+            return                      ; return to Elf/OS
                       
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing character set.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
-            
-buffer:     ds    BUFFER_SIZE
+            abend                       ; return to Elf/OS with an error code
+                      
             end   start
