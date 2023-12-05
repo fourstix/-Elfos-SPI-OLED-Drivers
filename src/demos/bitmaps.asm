@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a set of bitmaps on an OLED display using the SH1106 controller 
-; chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a set of bitmaps on an OLED display connected to
+; the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+3          ; Month, 80h offset means extended info
-            db      13             ; Day
+date:       db      80h+11         ; Month, 80h offset means extended info
+            db      30             ; Day
             dw      2023           ; year
            
             ; Current build number
-build:      dw      2              ; build
+build:      dw      3              ; build
             db      'Copyright 2023 by Gaston Williams',0
 
 
@@ -42,60 +42,58 @@ main:       lda   ra                    ; move past any spaces
             ldn   ra                    ; get byte
             lbz   good                  ; jump if no argument given
             ; otherwise display usage message
-            CALL  o_inmsg               
+            call  o_inmsg               
             db    'Usage: bitmaps',10,13,0
             RETURN                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; fill buffer
-                  
-            ;---- setup the display
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
 
+            ldi    GFX_SET              ; set color 
+            phi    r9
+            
                         
-            LOAD  rf, buffer            ; show updated display                        
-            LOAD  rd, test_bmp          ; point to bitmap buffer             
-            LOAD  r8, $1010             ; bitmap h = 16, w = 16
-            LOAD  r7, $0008
-            CALL  draw_bitmap           ; draw bitmap at random location
+            load  rf, test_bmp          ; point to bitmap buffer             
+            load  r8, $1010             ; bitmap h = 16, w = 16
+            load  r7, $0008
+            call  gfx_draw_bitmap       ; draw bitmap at random location
             lbdf  error
 
-            LOAD  rd, test_bmp          ; point to bitmap buffer             
-            LOAD  r8, $1010             ; bitmap h = 16, w = 16
-            LOAD  r7, $2020
-            CALL  draw_bitmap           ; draw bitmap at random location
+            load  rf, test_bmp          ; point to bitmap buffer             
+            load  r8, $1010             ; bitmap h = 16, w = 16
+            load  r7, $2020
+            call  gfx_draw_bitmap       ; draw bitmap at random location
             lbdf  error
 
-            LOAD  rd, test_bmp          ; point to bitmap buffer             
-            LOAD  r8, $1010             ; bitmap h = 16, w = 16
-            LOAD  r7, $1045
-            CALL  draw_bitmap           ; draw bitmap at random location
+            load  rf, test_bmp          ; point to bitmap buffer             
+            load  r8, $1010             ; bitmap h = 16, w = 16
+            load  r7, $1045
+            call  gfx_draw_bitmap       ; draw bitmap at random location
             lbdf  error
 
-            LOAD  rd, test_bmp          ; point to bitmap buffer             
-            LOAD  r8, $1010             ; bitmap h = 16, w = 16
-            LOAD  r7, $286F
-            CALL  draw_bitmap           ; draw bitmap at random location
+            load  rf, test_bmp          ; point to bitmap buffer             
+            load  r8, $1010             ; bitmap h = 16, w = 16
+            load  r7, $286F
+            call  gfx_draw_bitmap       ; draw bitmap at random location
             lbdf  error
 
-            LOAD  rf, buffer            ; show updated display
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            ;---- update display
+            call  oled_init_display
+            call  oled_update_display
 
-            CALL o_inmsg
+            call o_inmsg
                 db 'Done.',10,13,0
-            CLC
-            RETURN                      ; return to Elf/OS
+            clc
+            return                      ; return to Elf/OS
                       
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing bitmap.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
+            abend                       ; return to Elf/OS with an error code
                
 ;----- Adafruit flower
 test_bmp: db $00, $C0, $01, $C0, $01, $C0, $03, $E0, $F3, $E0, $FE, $F8, $7E, $FF, $33, $9F
           db $1F, $FC, $0D, $70, $1B, $A0, $3F, $E0, $3F, $F0, $7C, $F0, $70, $70, $30, $30
             
-buffer:     ds    BUFFER_SIZE
             end   start

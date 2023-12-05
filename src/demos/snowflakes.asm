@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a set of falling snowflake bitmaps on an OLED display using the 
-; SH1106 controller chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a set of falling snowflake bitmaps on an OLED display
+; connected to the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+3          ; Month, 80h offset means extended info
-            db    13             ; Day
+date:       db    80h+11         ; Month, 80h offset means extended info
+            db    30             ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    2              ; build
+build:      dw    3              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -42,22 +42,22 @@ main:       lda   ra                    ; move past any spaces
             ldn   ra                    ; get byte
             lbz   good                  ; jump if no argument given
             ; otherwise display usage message
-            call  O_INMSG               
+            call  o_inmsg               
             db    'Usage: snowflakes',10,13,0
-            call  O_INMSG               
+            call  o_inmsg               
             db    'Press input (/EF4) to quit program.',10,13,0
-            RETURN                      ; return to Elf/OS
+            return                      ; return to Elf/OS
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer            ; fill buffer
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
+
+            call  oled_init_display
                   
-            ;---- setup the display
-            LOAD  rf, buffer            ; point rf to display buffer                        
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
             
-repeat:     LOAD  rc, $10               ; set up loop counter            
-            LOAD  ra, rand_xy           ; point to random positions
+repeat:     load  rc, $10               ; set up loop counter            
+            load  ra, rand_xy           ; point to random positions
 
             
             ;----- set up registers for  snowflakes
@@ -65,33 +65,31 @@ snowflake:  lda   ra                    ; get random x
             plo   r7                    ; set as x origin
             lda   ra                    ; get random y
             phi   r7                    ; set as y origin
-            LOAD  r8, $1010             ; bitmap h = 16, w = 16
+            load  r8, $1010             ; bitmap h = 16, w = 16
   
-fall:       LOAD  rf, buffer            ; show updated display                        
-            LOAD  rd, flake             ; point to bitmap buffer                         
-            CALL  draw_bitmap            ; draw bitmap at random location
+fall:       ldi   GFX_SET              ; set color 
+            phi   r9
+            load  rf, flake             ; point to bitmap buffer                         
+            call  gfx_draw_bitmap       ; draw bitmap at random location
             lbdf  error
 
-            LOAD  rf, buffer            ; show updated display
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            call  oled_update_display
             
             ;---- wait half a second (input button will quit)  
-            LOAD  rb, $510E             ; wait a quarter of a second
+            load  rb, $510E             ; wait a quarter of a second
 wait1:      bn4   press1
             lbr   done
 press1:     dec   rb
             lbrnz rb, wait1
 
-            LOAD  rf, buffer            ; show updated display                        
-            LOAD  rd, flake             ; point to bitmap buffer                         
-            CALL  clear_bitmap          ; draw bitmap at random location
+            ldi   GFX_CLEAR
+            phi   r9                    ; set up color to erase          
+            load  rf, flake             ; point to bitmap buffer                         
+            call  gfx_draw_bitmap       ; clear bitmap
             lbdf  error
 
-            LOAD  rf, buffer            ; show updated display
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
-
+            call  oled_update_display
+            
             ghi   r7                    ; move flake down
             adi   04                    ; 4 pixels
             phi   r7 
@@ -103,18 +101,13 @@ nextflake:  dec   rc                    ; count down
             lbrnz rc, snowflake         ; repeat for next snowflake
             lbr   repeat                ; keep going until input is pressed
             
-done:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; clear out buffer
-
-            LOAD  rf, buffer
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
-             
-            RETURN                      ; return to Elf/OS
+done:       call  oled_clear_buffer     ; clear out buffer
+            call  oled_update_display 
+            return                      ; return to Elf/OS
                       
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing bitmap.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
+            abend                       ; return to Elf/OS with an error code
                
 
 ;----- snowflake 
@@ -127,5 +120,4 @@ rand_xy:  db 111,  4, 74,  0,  103, 14, 11,  9, 69,  7,  21,  3, 0,  13,  9, 15
           ;   x8   y8  x9  y9   xA  yA  xB  yB  xC  yC   xD  yD xE   yE  xF  yF 
           db  78,  11, 108, 7,  64,  1, 49,  0,  9,  15, 101, 5, 24, 16, 90, 13  
           
-buffer:     ds    BUFFER_SIZE
             end   start

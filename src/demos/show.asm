@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a graphics image on the OLED display using the SH1106 controller 
-; chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a graphics image on an OLED display connected to
+; the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,11 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
-
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sysconfig.inc
 #include ../include/oled.inc
+#include ../include/oled_spi_lib.inc
 
             extrn upscale_pixie64x32
 
@@ -25,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+3          ; Month, 80h offset means extended info
-            db      13             ; Day
+date:       db      80h+11         ; Month, 80h offset means extended info
+            db      27             ; Day
             dw      2023           ; year
            
             ; Current build number
-build:      dw      2              ; build
+build:      dw      3              ; build
 
             db    'Copyright 2023 by Gaston Williams',0
 
@@ -147,17 +146,17 @@ read_bmp:   mov   rd, fildes
             lbr   done
 
 display:    ldi   V_OLED_INIT
-            CALL  O_VIDEO
+            call  O_VIDEO
 
             LOAD  rf, frame_buf
             ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            call  O_VIDEO
 
 done:       mov   rd, fildes
-            CALL  o_close
+            call  o_close
 
             ldi   0
-            RTN
+            return
 
 errmsg:     db   'File not found.',10,13,0
 sizeerr:    db   'Invalid bitmap.',13,10,0

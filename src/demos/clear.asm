@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Clear the screen on an OLED  display using the SH1106 controller chip 
-; connected to port 0 of the 1802/Mini SPI interface.
+; Clear the screen on an OLED display connected to the 1802-Mini
+; computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,11 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sysconfig.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
+#include ../include/oled_spi_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +23,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+3             ; Month, 80h offset means extended info
-            db      13                ; Day
+date:       db      80h+11            ; Month, 80h offset means extended info
+            db      27                ; Day
             dw      2023              ; year
            
             ; Current build number
-build:      dw      2                 ; build
+build:      dw      3                 ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -44,17 +43,20 @@ main:       lda   ra                  ; move past any spaces
             ; otherwise display usage message
             call  O_INMSG             
             db    'Usage: clear',10,13,0
-            RTN                       ; return to Elf/OS 
+            return                    ; return to Elf/OS 
 
-clr:        ldi   V_OLED_INIT 
-            CALL  O_VIDEO
-            bdf   error
+clr:        call  oled_check_driver
+            lbdf  error
+            
+            ldi   V_OLED_INIT 
+            call  O_VIDEO
+            lbdf  error
             
             ldi   V_OLED_CLEAR        ; clear buffer
             call  O_VIDEO
-            bdf   error
-            RTN
+            lbdf  error
+            return
             
-error:      ABEND                     ; return to Elf/OS with error code
+error:      abend                     ; return to Elf/OS with error code
           
             end   start

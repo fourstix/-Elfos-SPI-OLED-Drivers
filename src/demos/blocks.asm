@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
-; Display a set of rectangles on an OLED display using the SH1106 controller 
-; chip connected to port 0 of the 1802/Mini SPI interface.
+; Display a set of rectangles on an OLED display connected to
+; the 1802-Mini computer via the SPI Expansion Board.
 ;
 ; Copyright 2023 by Gaston Williams
 ;
@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+3          ; Month, 80h offset means extended info
-            db    13             ; Day
+date:       db    80h+11         ; Month, 80h offset means extended info
+            db    29             ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    2              ; build
+build:      dw    3              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -43,42 +43,47 @@ main:       lda   ra                    ; move past any spaces
             lbz   good                  ; jump if no argument given
             call  o_inmsg               ; otherwise display usage message
             db    'Usage: blocks',10,13,0
-            RETURN                      ; and return to os
+            return                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; clear out buffer
+good:       call  oled_check_driver
+            lbdf  error
+              
+            call  oled_clear_buffer     ; clear out buffer
+
+
+            ldi    GFX_SET              ; set color to draw
+            phi    r9            
+
+            load   r7, $0810            ; draw first block 
+            load   r8, $3060             
+            call   gfx_fill_rect
+            lbdf   error
             
+            ldi    GFX_CLEAR            ; set color to clear 
+            phi    r9
 
-            LOAD   r7, $0810             ; draw first block 
-            LOAD   r8, $3060             
-            CALL   draw_block
+            load   r7, $1020            ; clear a block inside
+            load   r8, $2040             
+            call   gfx_fill_rect
             lbdf   error
 
-            LOAD   r7, $1020             ; clear a block inside
-            LOAD   r8, $2040             
-            CALL   clear_block
+            ldi    GFX_SET              ; set color to draw
+            phi    r9            
+
+            load   r7, $1828            ; draw last block
+            load   r8, $1030             
+            call   gfx_fill_rect
             lbdf   error
 
+            ;---- update display
+show_it:    call  oled_init_display
+            call  oled_update_display
 
-            LOAD   r7, $1828             ; draw last block
-            LOAD   r8, $1030             
-            CALL   draw_block
-            lbdf   error
-
-            ;---- udpate the display
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
+done:       clc   
+            return
             
-            LOAD  rf, buffer
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
-
-done:       CLC   
-            RETURN
-            
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing blocks.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
+            abend                       ; return to Elf/OS with an error code
             
-buffer:     ds    BUFFER_SIZE
             end   start

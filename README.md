@@ -1,15 +1,15 @@
 # Elfos-SPI-OLED-Drivers
-Elf/OS drivers for an 1802/Mini system with the 1802/Mini SPI adapter board connected to an OLED display on port 0.
+Elf/OS display drivers for an 1802/Mini system with the 1802/Mini SPI adapter board connected to an OLED display on port 0.
 
 Introduction
 ------------
-This repository contains 1802 Assembler code for OLED display programs that use a common display driver API and a graphics library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
+This repository contains 1802 Assembler code for OLED display programs that use a common display driver API, a common graphics library and a common oled device library.  The appropriate OLED driver program, such as the sh1106 driver program, should loaded before running the display programs.  
 
 The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306). The ssd1309 OLED display driver is based on code from the [OLED Display Library](https://github.com/Sylaina/oled-display).
 
 
-The graphics demo programs also use a common graphics library gfx_oled.lib.  The source code for the Elf/OS OLED graphics library is available on GitHub in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library).
-
+The graphics demo programs use the common [GFX 1802 library](https://github.com/fourstix/GFX-1802-Library) with the [Elf/OS OLED Graphics device library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) to draw to the display through the appropriate SPI OLED driver.
+ 
 Platform  
 --------
 The programs were written to run displays from an [1802-Mini](https://github.com/dmadole/1802-Mini) by David Madole running with the [1802/Mini SPI adapter board](https://github.com/arhefner/1802-Mini-SPI-DMA) by Tony Hefner. These programs were assembled and linked with updated versions of the Asm-02 assembler and Link-02 linker by Mike Riley. The updated versions required to assemble and link this code are available at [arhefner/Asm-02](https://github.com/arhefner/Asm-02) and [arhefner/Link-02](https://github.com/arhefner/Link-02).
@@ -127,7 +127,9 @@ Show the classic Elf spaceship program graphic on the display.
  
 OLED Graphics Demos
 -------------------
- 
+
+These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [Elf/OS GFX SPI OLED device library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) to write to the display through the appropriate OLED video driver.
+
 ## pixels
 **Usage:** pixels    
 Draws a simple pixel pattern on the display.
@@ -170,14 +172,18 @@ Draws the classic text greeting on the display.
 
 ## textbg
 **Usage:** textbg  
-Draws text strings on the display, using the transparent and opaque background options.
+Draws text strings on the display, using the normal, inverse and overlay text options.
+
+## align
+**Usage:** align  
+Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment.
 
 Repository Contents
 -------------------
 * **/src/demos/**  -- Source files for demo programs for OLED display drivers
   * clear.asm - Clear the display screen
   * splash.asm - Show the Adafruit splash screen on the display.
-  * show.asm - Read an show a bitmap graphics image file on the display. 
+  * show.asm - Read an show a bitmap graphics image file on the display.
   * pixiecvt.asm - Conversion routines used to read and display a graphics image.
   * bitmaps.asm - Demo program to draw Adafruit flower bitmaps on the display screen.
   * blocks.asm - Demo program to draw filled rectangles on the display screen. 
@@ -189,8 +195,9 @@ Repository Contents
   * snowflakes.asm - Demo program to draw falling snowflake bitmaps on the display screen.
   * charset.asm - Demo program to draw the printable ASCII character set on the display screen.
   * helloworld.asm - Demo program to draw the classic greeting on the display screen.
-  * textbg.asm - Demo program to draw text with transparent and opaque background options on the display screen.
+  * textbg.asm - Demo program to draw text with normal, inverse and overlay options on the display screen.
   * direct.asm - Demo program to directly write pattern bytes to the display.
+  * align.asm - Demo program to draw lines, rectangles and inverset text to show pixel alignment.
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
 * **/src/include/**  -- Include files for the SH1106 display programs and the libraries.  
@@ -199,12 +206,14 @@ Repository Contents
   * ssd1306.inc - SSD1306 display value constants.
   * ssd1309.inc - SSD1309 display value constants.
   * oled.inc - External definitions for OLED display driver API.
-  * gfx_lib.inc - External definitions for the Graphics OLED Library gfx_oled.lib.
+  * gfx_lib.inc - External definitions for the common GFX 1802 Library.
+  * oled_spi_lib.inc - External definitions for the GFX SPI OLED device library.
   * ops.inc - Opcode definitions for Asm/02.
   * bios.inc - Bios definitions from Elf/OS
   * kernel.inc - Kernel definitions from Elf/OS
 * **/src/lib/**  -- Library file for the OLED graphics demos.
-  * gfx_oled.lib - Elf/OS Graphics OLED library. The source files for library functions are in the [Elfos-Gfx-OLED-Library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) repository.
+  * oled_spi.lib - [Elf/OS GFX SPI OLED device library.](https://github.com/fourstix/Elfos-Gfx-OLED-Library)
+  * gfx.ib -  [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library)
 * **/src/drvr/**  -- Source files for the OLED display drivers.
   * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
   * ssd1306.asm - Assembly source file for the SSD1306 OLED display driver.

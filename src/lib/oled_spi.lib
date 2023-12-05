@@ -1,0 +1,195 @@
+.big
+{oled_display_buffer
+>0400
+}
+.big
+{oled_display_ptr
+\oled_display_buffer 0005
+/oled_display_buffer 0008 00
+:0000 9f 73 8f 73 f8 00 af f8 00 bf f8 00 ad f8 00 bd
+:0010 97 f6 f6 f6 bd 9d f6 bd 8d 76 ad 87 52 8d f4 ad
+:0020 9d 7c 00 bd 8d 52 8f f4 ad 9d 52 9f 74 bd 60 72
+:0030 af f0 bf d5
+}
+.big
+{oled_fill_buffer
+\oled_display_buffer 0009
+/oled_display_buffer 000c 00
+:0000 9f 73 8f 73 9c 73 8c 73 f8 00 af f8 00 bf f8 00
+:0010 ac f8 04 bc f8 ff 5f 1f 2c 8c ca 00 14 9c ca 00
+:0020 14 60 72 ac f0 bc 60 72 af f0 bf fc 00 d5
+^001b 14
+v001c
+^001f 14
+v0020
+}
+.big
+{oled_write_pixel
+/oled_display_ptr 0009 00
+\oled_display_ptr 000a
+:0000 9d 73 8d 73 9c 73 8c 73 d4 00 00 f8 01 bc 97 fa
+:0010 07 ac c2 00 1d 9c fe bc 2c 8c c0 00 12 9c 52 99
+:0020 c2 00 2d fe c3 00 37 0d f1 5d c0 00 3a f8 ff f3
+:0030 52 0d f2 5d c0 00 3a 0d f3 5d 60 72 ac f0 bc 60
+:0040 72 ad f0 bd fc 00 d5
++0013
++001b
++0021
++0025
++002b
++0035
+}
+.big
+{oled_fast_h_line
+/oled_display_ptr 0009 00
+\oled_display_ptr 000a
+:0000 9d 73 8d 73 9c 73 8c 73 d4 00 00 f8 01 bc 97 fa
+:0010 07 ac c2 00 1d 9c fe bc 2c 8c c0 00 12 99 ca 00
+:0020 27 9c 52 f8 ff f3 bc 9c 52 99 c2 00 37 fe c3 00
+:0030 3d 0d f1 5d c0 00 40 0d f2 5d c0 00 40 0d f3 5d
+:0040 89 c2 00 49 1d 29 c0 00 27 60 72 ac f0 bc 60 72
+:0050 ad f0 bd d5
++0013
++001b
++001f
++002b
++002f
++0035
++003b
++0042
++0047
+}
+.big
+{oled_fast_v_line
+:0000 9d 73 8d 73 9c 73 8c 73 9b 73 8b 73 98 73 88 73
+/oled_display_ptr 0012 00
+\oled_display_ptr 0013
+:0010 19 d4 00 00 97 fa 07 c2 00 7a fd 08 a8 f8 ea ab
+:0020 f8 00 bb 88 52 8b f4 ab 9b 7c 00 bb 0b b8 88 52
+:0030 89 f7 c3 00 4b fd 00 ac f8 ff bc 8c c2 00 4b 9c
+:0040 fe bc 2c c0 00 3b 9c 52 98 f2 b8 99 c2 00 5b fe
+:0050 c3 00 65 98 52 0d f1 5d c0 00 6a 98 fb ff 52 0d
+:0060 f2 5d c0 00 6a 98 52 0d f3 5d 88 52 89 f7 cb 00
+:0070 d3 a9 8d fc 80 ad 9d 7c 00 bd 89 ff 08 cb 00 9c
+:0080 a9 99 c2 00 8f fe c3 00 95 f8 ff 5d c0 00 72 f8
+:0090 00 5d c0 00 72 0d fb ff 5d c0 00 72 89 c2 00 d3
+:00a0 fa 07 a8 f8 f2 ab f8 00 bb 88 52 8b f4 ab 9b 7c
+:00b0 00 bb 0b b8 99 c2 00 c4 fe c3 00 ce 98 52 0d f1
+:00c0 5d c0 00 d3 98 fb ff 52 0d f2 5d c0 00 d3 98 52
+:00d0 0d f3 5d 60 72 a8 f0 b8 60 72 ab f0 bb 60 72 ac
+:00e0 f0 bc 60 72 ad f0 bd fc 00 d5 00 80 c0 e0 f0 f8
+:00f0 fc fe 00 01 03 07 0f 1f 3f 7f
++0018
+v001e
+^0021 ea
++0033
++003d
++0044
++004d
++0051
++0059
++0063
++006f
++007e
++0083
++0087
++008d
++0093
++009a
++009e
+v00a4
+^00a7 f2
++00b6
++00ba
++00c2
++00cc
+}
+.big
+{oled_check_driver
+:0000 f8 56 ad f8 04 bd 4d ff c0 ca 00 18 4d ff 05 ca
+:0010 00 24 0d ff 1b ca 00 24 f8 27 af f8 00 bf d4 03
+:0020 33 ff 00 d5 fc 00 d5 4e 6f 20 4f 4c 45 44 20 64
+:0030 72 69 76 65 72 20 6c 6f 61 64 65 64 2e 0a 0d 00
++000a
++0010
++0016
+v0019
+^001c 27
+}
+.big
+{oled_clear_buffer
+\oled_display_buffer 0009
+/oled_display_buffer 000c 00
+:0000 9f 73 8f 73 9c 73 8c 73 f8 00 af f8 00 bf f8 00
+:0010 ac f8 04 bc f8 00 5f 1f 2c 8c ca 00 14 9c ca 00
+:0020 14 60 72 ac f0 bc 60 72 af f0 bf fc 00 d5
+^001b 14
+v001c
+^001f 14
+v0020
+}
+.big
+{oled_init_display
+:0000 f8 01 d4 04 56 d5
+}
+.big
+{oled_update_display
+\oled_display_buffer 0005
+/oled_display_buffer 0008 00
+:0000 9f 73 8f 73 f8 00 af f8 00 bf f8 03 d4 04 56 60
+:0010 72 af f0 bf d5
+}
+.big
+{oled_fill_bg
+:0000 99 fe c3 00 36 99 73 89 73 98 73 88 73 97 73 87
+:0010 73 f8 06 a8 f8 08 b8 99 c2 00 21 f8 00 b9 c0 00
+/gfx_fill_rect 0025 00
+\gfx_fill_rect 0026
+:0020 24 f8 01 b9 d4 00 00 60 72 a7 f0 b7 60 72 a8 f0
+:0030 b8 60 72 a9 f0 b9 fc 00 d5
++0003
++0019
++001f
+}
+.big
+{oled_print_char
+/gfx_adj_cursor 0009 00
+\gfx_adj_cursor 000a
+/oled_fill_bg 000c 00
+\oled_fill_bg 000d
+/gfx_draw_char 000f 00
+:0000 99 73 89 73 98 73 88 73 d4 00 00 d4 00 00 d4 00
+\gfx_draw_char 0010
+:0010 00 17 60 72 a8 f0 b8 60 72 a9 f0 b9 fc 00 d5
+}
+.big
+{oled_print_string
+/oled_print_char 000e 00
+\oled_print_char 000f
+:0000 99 73 89 73 98 73 88 73 48 c2 00 16 a9 d4 00 00
+:0010 c3 00 16 c0 00 08 60 72 a8 f0 b8 60 72 a9 f0 b9
+:0020 d5
++000a
++0011
++0014
+}
+.big
+{gfx_disp_size
+:0000 f8 40 ba f8 80 aa d5
+}
+{gfx_disp_clear
+?oled_clear_buffer 0001
+:0000 c0 00 00
+}
+{gfx_disp_pixel
+?oled_write_pixel 0001
+:0000 c0 00 00
+}
+{gfx_disp_v_line
+?oled_fast_v_line 0001
+:0000 c0 00 00
+}
+{gfx_disp_h_line
+?oled_fast_h_line 0001
+:0000 c0 00 00
+}

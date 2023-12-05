@@ -11,12 +11,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include ../include/ops.inc
 #include ../include/bios.inc
 #include ../include/kernel.inc
-#include ../include/ops.inc
-#include ../include/sh1106.inc
 #include ../include/oled.inc
-#include ../include/gfx_oled.inc
+#include ../include/oled_spi_lib.inc
+#include ../include/gfx_lib.inc
 
             org   2000h
 start:      br    main
@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+3          ; Month, 80h offset means extended info
-            db    13             ; Day
+date:       db    80h+11         ; Month, 80h offset means extended info
+            db    29             ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    2              ; build
+build:      dw    3              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -44,46 +44,46 @@ main:       lda   ra                    ; move past any spaces
             ; otherwise display usage message
             call  O_INMSG               
             db    'Usage: boxes',10,13,0
-            RETURN                      ; and return to os
+            return                      ; and return to os
 
-good:       LOAD  rf, buffer            ; point rf to display buffer
-            CALL  clear_buffer          ; clear out buffer
+good:       call  oled_check_driver
+            lbdf  error
             
-            LOAD  r7, $0000             ; draw border rectangle
-            LOAD  r8, $3F7F             
-            CALL  draw_rect
-            lbdf  error
-
-            LOAD  r7, $0810             ; draw rectangle inside first
-            LOAD  r8, $3060             
-            CALL  draw_rect
-            lbdf  error
-
-            LOAD  r7, $1020             ; draw rectangle inside second
-            LOAD  r8, $2040             
-            CALL  draw_rect
-            lbdf  error
-
-
-            LOAD  r7, $1828             ; draw last rectangle
-            LOAD  r8, $1030             
-            lbdf  error
-            CALL  draw_rect
-
-            ;---- udpate the display
-            ldi   V_OLED_INIT
-            CALL  O_VIDEO          
+            call  oled_clear_buffer     ; clear out buffer
             
-            LOAD  rf, buffer
-            ldi   V_OLED_SHOW
-            CALL  O_VIDEO
+            ldi    GFX_SET              ; set color 
+            phi    r9
 
-done:       CLC   
-            RETURN
+            load  r7, $0000             ; draw border rectangle
+            load  r8, $3F7F             
+            call  gfx_draw_rect
+            lbdf  error
+
+            load  r7, $0810             ; draw rectangle inside first
+            load  r8, $3060             
+            call  gfx_draw_rect
+            lbdf  error
+
+            load  r7, $1020             ; draw rectangle inside second
+            load  r8, $2040             
+            call  gfx_draw_rect
+            lbdf  error
+
+
+            load  r7, $1828             ; draw last rectangle
+            load  r8, $1030             
+            call  gfx_draw_rect
+            lbdf  error
+
+            ;---- update display
+            call  oled_init_display
+            call  oled_update_display
+
+done:       clc   
+            return
             
-error:      CALL o_inmsg
+error:      call o_inmsg
             db 'Error drawing rectangles.',10,13,0
-            ABEND                       ; return to Elf/OS with an error code
+            abend                       ; return to Elf/OS with an error code
             
-buffer:     ds    BUFFER_SIZE
             end   start
