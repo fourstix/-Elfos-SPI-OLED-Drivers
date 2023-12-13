@@ -11,12 +11,6 @@ Platform
 --------
 The programs were written to run displays from an [1802-Mini](https://github.com/dmadole/1802-Mini) by David Madole running with the [1802/Mini SPI adapter board](https://github.com/arhefner/1802-Mini-SPI-DMA) by Tony Hefner. These programs were assembled and linked with updated versions of the Asm-02 assembler and Link-02 linker by Mike Riley. The updated versions required to assemble and link this code are available at [arhefner/Asm-02](https://github.com/arhefner/Asm-02) and [arhefner/Link-02](https://github.com/arhefner/Link-02).
 
-Supported Displays
-------------------
-* [SH1106 OLED display](https://github.com/fourstix/Elfos-SPI-OLED-Drivers#sh1106-display-pinout)
-* [SSD1306 OLED display](https://github.com/fourstix/Elfos-SPI-OLED-Drivers#ssd1306-display-pinout)
-* [SSD1309 OLED display](https://github.com/fourstix/Elfos-SPI-OLED-Drivers#ssd1309-display-pinout)
-
 OLED SPI Library API
 --------------------
 
@@ -77,7 +71,7 @@ OLED SPI Library API
 
 GFX Display Interface
 ---------------------
-The following methods are implemented in this library, oled_spi.lib, and are called by methods in the gfx library gfx.lib.  These methods encapsulate the SPI OLED specific details.  The source file gfx_display.asm contains the logic so that when a GFX display interface method is called it delegates to the appropriate SPI OLED private method.
+The following methods are implemented in this library, oled_spi.lib, and are called by methods in the gfx library gfx.lib.  These methods encapsulate the SPI OLED device specific details.  The source file gfx_display.asm contains the logic so that when a GFX display interface method is called it delegates to the appropriate SPI OLED private method.
 
 ## GFX Interface Methods
 
@@ -87,7 +81,7 @@ The following methods are implemented in this library, oled_spi.lib, and are cal
 * gfx_disp_h_line - set the data in the memory buffer for a horizontal line.
 * gfx_disp_v_line - set the data in the memory buffer for a vertical line
 
-## GFX Display Interface SPI OLED Methods
+## GFX Display Interface to SPI OLED Methods
 
 <table>
 <tr><th>Interface Method</th><th>SPI OLED Method</th></tr>
@@ -116,22 +110,6 @@ The following methods are implemented in this library, oled_spi.lib, and are cal
 <tr><td>oled_fast_v_line</td><td>origin y</td><td>origin x</td><td>color</td><td>length</td><td>DF = 1, if error</td></tr>
 </table>
 
-Repository Contents
--------------------
-* **/src/**  -- Source files for the Elfo/OS Graphics OLED library.
-  * *.asm - Assembly source files for library functions.
-  * build.bat - Windows batch file to assemble and create the gfx_oled graphics library. Replace [Your_Path] with the correct path information for your system. 
-  * clean.bat - Windows batch file to delete the gfx_oled library and its associated files.    
-* **/include/**  -- Include files for the Elfo/OS Graphics OLED library.  
-  * oled_spi_lib.inc - Definitions for SPI OLED library public methods.
-  * oled_spi_def.inc - Definitions for SPI OLED private library methods.
-  * gfx_display.inc - Definitions required for the GFX Display Interface.
-  * gfx_lib.inc - GFX 1802 Library public method definitions
-  * ops.inc - Opcode definitions for Asm/02.
-* **/lib/**  -- Library files for the Elf/OS OLED graphics routines.
-  * oled_spi.lib - SPI OLED GFX device library. The source files for library functions are in the */src/* directory.
-  * gfx.lib - Common [GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library)
-  
 License Information
 -------------------
 
