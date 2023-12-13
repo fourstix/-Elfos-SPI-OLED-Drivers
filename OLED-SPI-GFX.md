@@ -1,7 +1,7 @@
 
-OLED SPI GFX Library
-----------------------
-An implementation of the [GFX-1802-Library](https://github.com/fourstix/GFX-1802-Library) display interface in graphics device library for an OLED display using an appropriate video driver from [Elf/OS SPI OLED Drivers](https://github.com/fourstix/Elfos-SPI-OLED-Drivers) connected to an Elf/OS system, such as the 1802/Mini with an SPI adapter board.
+OLED SPI Graphics Device Library
+--------------------------------
+An implementation of the [GFX-1802-Library](https://github.com/fourstix/GFX-1802-Library) display interface in a graphics device library for an OLED display using an appropriate video driver from [Elf/OS SPI OLED Drivers](https://github.com/fourstix/Elfos-SPI-OLED-Drivers) connected to an Elf/OS system, such as the 1802/Mini with an SPI adapter board.
 
 Introduction
 ------------
