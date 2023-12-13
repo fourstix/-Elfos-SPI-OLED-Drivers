@@ -208,6 +208,10 @@ Repository Contents
   * align.asm - Demo program to draw lines, rectangles and inverset text to show pixel alignment.
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
+* **/src/oled_spi/**  -- Source files for the Elfo/OS Graphics OLED SPI device library.
+  * *.asm - Assembly source files for library functions.
+  * build.bat - Windows batch file to assemble and create the gfx_oled graphics library. Replace [Your_Path] with the correct path information for your system. 
+  * clean.bat - Windows batch file to delete the gfx_oled library and its associated files.   
 * **/src/include/**  -- Include files for the SH1106 display programs and the libraries.  
   * sysconfig.inc - System configuration definitions for programs.
   * sh1106.inc - SH1106 display value constants.
@@ -216,11 +220,13 @@ Repository Contents
   * oled.inc - External definitions for OLED display driver API.
   * gfx_lib.inc - External definitions for the common GFX 1802 Library.
   * oled_spi_lib.inc - External definitions for the GFX SPI OLED device library.
+  * oled_spi_def.inc - Definitions for SPI OLED private library methods.
+  * gfx_display.inc - Definitions required for the GFX Display Interface.
   * ops.inc - Opcode definitions for Asm/02.
   * bios.inc - Bios definitions from Elf/OS
   * kernel.inc - Kernel definitions from Elf/OS
 * **/src/lib/**  -- Library file for the OLED graphics demos.
-  * oled_spi.lib - [Elf/OS GFX SPI OLED device library.](https://github.com/fourstix/Elfos-Gfx-OLED-Library)
+  * oled_spi.lib - [Elf/OS GFX SPI OLED device library.](OLED-SPI-GFX.md)
   * gfx.ib -  [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library)
 * **/src/drvr/**  -- Source files for the OLED display drivers.
   * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
