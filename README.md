@@ -8,7 +8,7 @@ This repository contains 1802 Assembler code for OLED display programs that use 
 The OLED display drivers are based on code from Adafruit's [Adafruit_GFX-Library](https://github.com/adafruit/Adafruit-GFX-Library) written by Ladyada Limor Fried. The sh1106 OLED display driver is also based on code from the [Fast SH1106 Library](https://forum.arduino.cc/t/a-fast-sh1106-library-128x64-oled/236309) written by Arthur Liberman. The ssd1306 OLED display driver is based on code from Adafruit's [Adafruit_SSD1306 Library](https://github.com/adafruit/Adafruit_SSD1306). The ssd1309 OLED display driver is based on code from the [OLED Display Library](https://github.com/Sylaina/oled-display).
 
 
-The graphics demo programs use the common [GFX 1802 library](https://github.com/fourstix/GFX-1802-Library) with the [Elf/OS OLED Graphics device library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) to draw to the display through the appropriate SPI OLED driver.
+The graphics demo programs use the common [GFX 1802 library](https://github.com/fourstix/GFX-1802-Library) with the [OLED SPI Graphics device library](OLED-SPI-GFX.md) to draw to the display through the appropriate SPI OLED video driver.
  
 Platform  
 --------
@@ -88,8 +88,8 @@ The following wiring is used to connect the Elf/OS SPI Adapter board to the SSD1
 <tr><td>CS</td><td>Green</td><td>Chip Select</td><td>5</td></tr>
 </table>
 
-Display Library API
----------------------
+Video Driver API
+----------------
 
 All the API are invoked by calling the video routine at O_VIDEO with the appropriate API ID in D. 
 The Kernel Video vector O_VIDEO and the API ID's are defined in the oled.inc include file.
@@ -103,6 +103,14 @@ The Kernel Video vector O_VIDEO and the API ID's are defined in the oled.inc inc
 <tr><td>V_OLED_CLEAR</td><td>Clear the display</td><td colspan="2">(None)</td></tr>
 <tr><td>V_OLED_SHOW</td><td>Update the display</td><td colspan="2">Input: rf - Pointer to 1K byte display buffer</td></tr>
 </table>
+
+OLED SPI Graphics Device Library
+--------------------------------
+The [OLED SPI Graphics device library](OLED-SPI-GFX.md) is included in this project and is documented [here.](OLED-SPI-GFX.md)
+
+GFX 1802 Graphics Library
+-------------------------
+The common [GFX 1802 Graphics Library](https://github.com/fourstix/GFX-1802-Library) is available in the [GFX 1802 Library](https://github.com/fourstix/GFX-1802-Library) repository.
 
 OLED Demo Programs
 ------------------
