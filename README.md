@@ -136,7 +136,7 @@ Show the classic Elf spaceship program graphic on the display.
 OLED Graphics Demos
 -------------------
 
-These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [Elf/OS GFX SPI OLED device library](https://github.com/fourstix/Elfos-Gfx-OLED-Library) to write to the display through the appropriate OLED video driver.
+These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [OLED SPI graphics device library](OLED-SPI-GFX.md) to write to the display through the appropriate OLED video driver.
 
 ## pixels
 **Usage:** pixels    
@@ -188,6 +188,31 @@ Draws a set of lines and rectangles with an inverse text string on the display t
 
 Repository Contents
 -------------------
+* **/src/drvr/**  -- Source files for the OLED display drivers.
+  * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
+  * ssd1306.asm - Assembly source file for the SSD1306 OLED display driver.
+  * ssd1309.asm - Assembly source file for the SSD1309 OLED display driver.
+  * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.     
+* **/src/oled_spi/**  -- Source files for the OLED SPI graphics device library.
+  * *.asm - Assembly source files for library functions.
+  * build.bat - Windows batch file to assemble and create the oled_spi graphics device library. Replace [Your_Path] with the correct path information for your system. 
+  * clean.bat - Windows batch file to delete the oled_spi graphics device library and its associated files.   
+* **/src/include/**  -- Include files for the graphics display programs and their libraries.  
+  * sysconfig.inc - System configuration definitions for programs.
+  * sh1106.inc - SH1106 display value constants.
+  * ssd1306.inc - SSD1306 display value constants.
+  * ssd1309.inc - SSD1309 display value constants.
+  * oled.inc - External definitions for OLED display driver API.
+  * gfx_lib.inc - External definitions for the common GFX 1802 Library.
+  * oled_spi_lib.inc - External definitions for the SPI OLED graphics device library.
+  * oled_spi_def.inc - Definitions for SPI OLED private library methods.
+  * gfx_display.inc - Definitions required for the GFX Display Interface.
+  * ops.inc - Opcode definitions for Asm/02.
+  * bios.inc - Bios definitions from Elf/OS
+  * kernel.inc - Kernel definitions from Elf/OS
+* **/src/lib/**  -- Library files for the OLED graphics demos.
+  * oled_spi.lib - [OLED SPI grahics device library.](OLED-SPI-GFX.md)
+  * gfx.ib -  [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library)
 * **/src/demos/**  -- Source files for demo programs for OLED display drivers
   * clear.asm - Clear the display screen
   * splash.asm - Show the Adafruit splash screen on the display.
@@ -208,31 +233,6 @@ Repository Contents
   * align.asm - Demo program to draw lines, rectangles and inverset text to show pixel alignment.
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
-* **/src/oled_spi/**  -- Source files for the Elfo/OS Graphics OLED SPI device library.
-  * *.asm - Assembly source files for library functions.
-  * build.bat - Windows batch file to assemble and create the gfx_oled graphics library. Replace [Your_Path] with the correct path information for your system. 
-  * clean.bat - Windows batch file to delete the gfx_oled library and its associated files.   
-* **/src/include/**  -- Include files for the SH1106 display programs and the libraries.  
-  * sysconfig.inc - System configuration definitions for programs.
-  * sh1106.inc - SH1106 display value constants.
-  * ssd1306.inc - SSD1306 display value constants.
-  * ssd1309.inc - SSD1309 display value constants.
-  * oled.inc - External definitions for OLED display driver API.
-  * gfx_lib.inc - External definitions for the common GFX 1802 Library.
-  * oled_spi_lib.inc - External definitions for the SPI OLED graphics device library.
-  * oled_spi_def.inc - Definitions for SPI OLED private library methods.
-  * gfx_display.inc - Definitions required for the GFX Display Interface.
-  * ops.inc - Opcode definitions for Asm/02.
-  * bios.inc - Bios definitions from Elf/OS
-  * kernel.inc - Kernel definitions from Elf/OS
-* **/src/lib/**  -- Library file for the OLED graphics demos.
-  * oled_spi.lib - [Elf/OS GFX SPI OLED device library.](OLED-SPI-GFX.md)
-  * gfx.ib -  [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library)
-* **/src/drvr/**  -- Source files for the OLED display drivers.
-  * sh11106.asm - Assembly source file for the SH1106 OLED display driver.
-  * ssd1306.asm - Assembly source file for the SSD1306 OLED display driver.
-  * ssd1309.asm - Assembly source file for the SSD1309 OLED display driver.
-  * asm.bat - Windows batch file to assemble the sh1106 oled display driver. Replace [Your_Path] with the correct path information for your system.      
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.
 * **/bin/drvr/**  -- Binary files for OLED display drivers.
 * **/lbr/**  -- Elf/OS library file with OLED driver demo programs.
