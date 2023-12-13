@@ -35,9 +35,9 @@ The following pinout is used to connect the Elf/OS SPI Adapter board to the OLED
 
 Supported Displays
 ------------------
-* SH1106 OLED display
-* SSD1306 OLED display
-* SSD1309 OLED display
+* [SH1106 OLED display](#sh1106-display-pinout)
+* [SSD1306 OLED display](#ssd1306-display-pinout)
+* [SSD1309 OLED display](#ssd1309-display-pinout)
 
 SH1106 Display Pinout
 ---------------------
@@ -219,7 +219,7 @@ Repository Contents
   * ssd1309.inc - SSD1309 display value constants.
   * oled.inc - External definitions for OLED display driver API.
   * gfx_lib.inc - External definitions for the common GFX 1802 Library.
-  * oled_spi_lib.inc - External definitions for the GFX SPI OLED device library.
+  * oled_spi_lib.inc - External definitions for the SPI OLED graphics device library.
   * oled_spi_def.inc - Definitions for SPI OLED private library methods.
   * gfx_display.inc - Definitions required for the GFX Display Interface.
   * ops.inc - Opcode definitions for Asm/02.
