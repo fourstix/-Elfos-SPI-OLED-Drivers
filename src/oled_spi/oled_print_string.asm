@@ -39,8 +39,8 @@
 ; Parameters: 
 ;   r7.1 - y (row)
 ;   r7.0 - x (column)
-;   r8   - pointer to null-terminated ASCII string
 ;   r9.1 - background (GFX_ BG_TRANSPARENT OR GFX_OPAQUE)
+;   rf   - pointer to null-terminated ASCII string
 ;
 ; Note: Checks x,y values, error if out of bounds. 
 ;       Checks ASCII character value, draws DEL (127) if out of bounds
@@ -51,11 +51,11 @@
 ;---------------------------------------------------------------------
             proc    oled_print_string
             push    r9                ; save color register
-            push    r8                ; save string pointer register
+            push    r8                ; save character register
                         
-ds_loop:    lda     r8                ; r8 points to string of characters  
+ds_loop:    lda     rf                ; r8 points to string of characters  
             lbz     ds_done           ; null ends the string
-            plo     r9                ; put character to draw
+            plo     r8                ; put character to draw
             
             CALL    oled_print_char   ; r7 advances to next position  
             

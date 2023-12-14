@@ -36,8 +36,14 @@
 ; Parameters: r7.1 - origin y 
 ;             r7.0 - origin x 
 ;             r9.1 - color 
-;             r9.0 - length 
-;                  
+;             r8.0 - length 
+; Registers Used:
+;             rd   - buffer pointer
+;             rc.0 - counter
+;             rb   - look up table pointer
+;             ra.1 - mask byte
+;             ra.0 - mod value 
+;                 
 ; Return: (None) r8, r9.0 - consumed
 ;-------------------------------------------------------
             proc   oled_fast_v_line
@@ -45,7 +51,7 @@
             push   rd               ; save buffer pointer
             push   rc               ; save counter
             push   rb               ; save look up register
-            push   r8               ; save scratch register
+            push   ra               ; save scratch register
 
             ;-------------------------------------------------------
             ;  rd - points to byte in buffer
@@ -53,15 +59,15 @@
             ;  rc.0 - counter
             ;  rb   - look up table ptr
             ;  r9.1 - color 
-            ;  r9.0 - length (h)
-            ;  r8.1 - mask byte
-            ;  r8.0 - mod value
+            ;  r8.0 - length (h)
+            ;  ra.1 - mask byte
+            ;  ra.0 - mod value
             ;  r7.1 - origin y
             ;  r7.0 - origin x
             ;-------------------------------------------------------
             
             ; increase length to always draw at least one pixel
-            inc    r9                 
+            inc    r8                 
           
             ;---- get ptr to byte in buffer
             call   oled_display_ptr ; rd now points to byte in buffer
@@ -72,7 +78,7 @@
             lbz    fwv_byte         ; if byte aligned, draw entire byte
             ;---- calculate mod value
             sdi     8               ; D = (8 - D) = 8 - (y&7)
-            plo    r8               ; save mod in r8.0
+            plo    ra               ; save mod in ra.0
             
 
             ;-------------------------------------------------------
@@ -80,7 +86,7 @@
             ;-------------------------------------------------------            
                         
             load   rb, premask      ; set lookup ptr to premask
-            glo    r8               ; get mod value
+            glo    ra               ; get mod value
             str    r2               ; save in M(X)
             glo    rb               ; get look up ptr
             add                     ; add mod offset to look up ptr
@@ -90,12 +96,12 @@
             phi    rb               ; rb now points to premask value
             
             ldn    rb               ; get premask byte from look up table
-            phi    r8               ; save in r8.1
+            phi    ra               ; save in ra.1
             
             ;---- check if h is less than mod value
-            glo    r8               ; get mod value
+            glo    ra               ; get mod value
             str    r2               ; save at M(X)
-            glo    r9               ; get h
+            glo    r8               ; get h
             sm                      ; D = (h - m)
             lbdf   fwv_mask1        ; if DF = 1, (h - mod) >= 0, mask is okay
             
@@ -114,22 +120,22 @@ fwv_shft1:  glo    rc               ; check counter
 
             ghi    rc               ; get shifted bit mask
             str    r2               ; save in M(X)
-            ghi    r8               ; get premask
+            ghi    ra               ; get premask
             and                     ; clear out unused high bits
-            phi    r8               ; save premask
+            phi    ra               ; save premask
 fwv_mask1:  ghi    r9               ; check color
             lbz    clr_mask1        ; check for GFX_CLEAR  
             shl                     ; check for GFX_INVERSE
             lbdf   inv_mask1        ; DF =1, means GFX_INVERSE
             
-            ghi    r8               ; get premask for GFX_SET
+            ghi    ra               ; get premask for GFX_SET
             str    r2               ; save premask in M(X) 
             ldn    rd               ; get first byte
             or                      ; or to set selected bits
             str    rd               ; put back in buffer
             lbr    fwv_draw         ; continue to draw rest of line
              
-clr_mask1:  ghi    r8               ; get premask          
+clr_mask1:  ghi    ra               ; get premask          
             xri    $FF              ; invert mask for AND
             str    r2               ; save premask in M(X)
             ldn    rd               ; get byte from buffer
@@ -137,28 +143,28 @@ clr_mask1:  ghi    r8               ; get premask
             str    rd               ; put back in buffer
             lbr    fwv_draw         ; continue to draw rest of line
             
-inv_mask1:  ghi    r8               ; get premask          
+inv_mask1:  ghi    ra               ; get premask          
             str    r2               ; save premask in M(X)
             ldn    rd               ; get byte from buffer
             xor                     ; xor to invert selected bits
             str    rd               ; put back in buffer
                            
-fwv_draw:   glo    r8               ; adjust h by mod value
+fwv_draw:   glo    ra               ; adjust h by mod value
             str    r2               ; save mod value in M(X)
-            glo    r9               ; get h (length)
+            glo    r8               ; get h (length)
             sm                      ; D = (h - mod)
             lbnf   fwv_done         ; if h < mod, we're done!
-            plo    r9               ; save updated h value
+            plo    r8               ; save updated h value
 
             ;-------------------------------------------------------
             ; write entire bytes at a time
             ;-------------------------------------------------------            
 
 next_byte:  add16  rd, 128          ; advance buffer ptr to next line
-fwv_byte:   glo    r9               ; get h
+fwv_byte:   glo    r8               ; get h
             smi     8               ; subtract 8
             lbnf   fwv_last         ; if h < 8, do last byte
-            plo    r9               ; save h = h-8
+            plo    r8               ; save h = h-8
             ghi    r9               ; check color
             lbz    clr_byte         ; check for GFX_CLEAR  
             shl                     ; check for GFX_INVERSE
@@ -177,12 +183,12 @@ inv_byte:   ldn    rd               ; get byte from buffer
             str    rd               ; update byte in buffer
             lbr    next_byte        ; continue to next byte
             
-fwv_last:   glo    r9               ; do the last partial byte
+fwv_last:   glo    r8               ; do the last partial byte
             lbz    fwv_done         ; h = 0, ends on byte boundary, we're done
             ani    7                ; h&7 is last mod value
-            plo    r8               ; save mod value
+            plo    ra               ; save mod value
             load   rb, postmask     ; set rb to lookup table
-            glo    r8               ; get mod value
+            glo    ra               ; get mod value
             str    r2               ; save mod value in M(X)
             glo    rb               ; add mod value to lookup ptr
             add 
@@ -191,7 +197,7 @@ fwv_last:   glo    r9               ; do the last partial byte
             adci   0
             phi    rb
             ldn    rb               ; get post mask value
-            phi    r8               ; save postmask byte
+            phi    ra               ; save postmask byte
 
             ;-------------------------------------------------------
             ; write the bits in the remaining last byte  
@@ -202,14 +208,14 @@ fwv_last:   glo    r9               ; do the last partial byte
             shl                     ; check for GFX_INVERSE
             lbdf   inv_mask2        ; DF =1, means GFX_INVERSE
             
-            ghi    r8               ; get postmask for GFX_SET
+            ghi    ra               ; get postmask for GFX_SET
             str    r2               ; save postmask in M(X) 
             ldn    rd               ; get last byte
             or                      ; or to set selected bits
             str    rd               ; put back in buffer
             lbr    fwv_done         ; finished drawing line
              
-clr_mask2:  ghi    r8               ; get postmask          
+clr_mask2:  ghi    ra               ; get postmask          
             xri    $FF              ; invert mask for AND
             str    r2               ; save postmask in M(X)
             ldn    rd               ; get last byte from buffer
@@ -217,13 +223,13 @@ clr_mask2:  ghi    r8               ; get postmask
             str    rd               ; put back in buffer
             lbr    fwv_done         ; finished drawing line
             
-inv_mask2:  ghi    r8               ; get postmask          
+inv_mask2:  ghi    ra               ; get postmask          
             str    r2               ; save postmask in M(X)
             ldn    rd               ; get last byte from buffer
             xor                     ; xor to invert selected bits
             str    rd               ; put back in buffer            
             
-fwv_done:   pop    r8               ; restore registers
+fwv_done:   pop    ra               ; restore registers
             pop    rb
             pop    rc
             pop    rd  

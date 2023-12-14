@@ -37,9 +37,9 @@
 ;   r7.1 - origin y 
 ;   r7.0 - origin x 
 ;   r9.1 - color 
-;   r9.0 - length  (0 to 127)   
+;   r8.0 - length  (0 to 127)   
 ;                  
-; Return: (None) r9.0 - consumed
+; Return: (None) r8.0 - consumed
 ;-------------------------------------------------------
             proc    oled_fast_h_line
             
@@ -89,10 +89,10 @@ flip_ybit:  ldn     rd                ; get byte from buffer
             xor                       ; XOR mask to invert bit
             str     rd                ; put updated byte back in buffer
   
-wfh_chk:    glo     r9                ; check length count
+wfh_chk:    glo     r8                ; check length count
             lbz     wh_done           ; if zero we are done
             inc     rd                ; move ptr to next byte
-            dec     r9                ; draw length of w pixels
+            dec     r8                ; draw length of w pixels
             lbr     wfh_loop            
 
 wh_done:    pop     rc

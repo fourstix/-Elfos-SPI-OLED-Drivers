@@ -62,14 +62,14 @@ good:       call  oled_check_driver
           
             load  r7, 0                 ;---- Set R7 at origin (0,0)
             ldi   ' '                   ; set up first character
-            plo   r9
+            plo   r8
 
 draw_ch:    glo   rc                    ; get counter
             lbz   show                  ; when done, show display
                           
             call  oled_print_char       ; draw character   
 
-            inc   r9                    ; go to next character
+            inc   r8                    ; go to next character
             dec   rc                    ; count down
             lbr   draw_ch               ; keep going until all chars drawn
             

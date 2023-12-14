@@ -79,7 +79,7 @@
 ;
 ; Parameters: 
 ;   r9.1 - color 
-;   r9.0 - length     
+;   r8.0 - length     
 ;   r7.1 - origin y 
 ;   r7.0 - origin x 
 ;                  
@@ -97,10 +97,10 @@
 ;            adi      1
 ;            phi     r7                ; save updated y value
 ;            
-;            glo     r9                ; check length count
+;            glo     r8                ; check length count
 ;            lbz     wv_done           ; if zero we are done
 ;            
-;            dec     r9                ; draw length of w pixels
+;            dec     r8                ; draw length of w pixels
 ;            lbr     wv_loop            
 ;wv_done:    return
 
@@ -113,7 +113,7 @@
 ;
 ; Parameters: 
 ;   r9.1 - color 
-;   r9.0 - length  (0 to width-1)   
+;   r8.0 - length  (0 to width-1)   
 ;   r7.1 - origin y 
 ;   r7.0 - origin x 
 ;                  
@@ -130,9 +130,9 @@
 ;            
 ;            inc     r7                ; move x to next position
 ;            
-;            glo     r9                ; check length count
+;            glo     r8                ; check length count
 ;            lbz     wh_done           ; if zero we are done
-;            dec     r9                ; draw length of w pixels
+;            dec     r8                ; draw length of w pixels
 ;            lbr     wh_loop            
 ;
 ;wh_done:    return
