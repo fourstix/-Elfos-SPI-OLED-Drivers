@@ -30,7 +30,8 @@
 ; drawn at cursor position x,y.
 ;
 ; Parameters: 
-;   r9.1 - color (text mode)
+;   r9.1 - color (text style: GFX_TXT_NORMAL, GFX_TXT_INVERSE or GFX_TXT_OVERLAY)
+;   r9.0 - rotation
 ;   r7.1 - cursor y  (0 to 56)
 ;   r7.0 - cursor x  (0 to 122)
 ;

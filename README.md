@@ -136,55 +136,55 @@ Show the classic Elf spaceship program graphic on the display.
 OLED Graphics Demos
 -------------------
 
-These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [OLED SPI graphics device library](OLED-SPI-GFX.md) to write to the display through the appropriate OLED video driver.
+These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [OLED SPI graphics device library](OLED-SPI-GFX.md) to write to the display through the appropriate OLED video driver.  They all support rotation of the display through the -r option.
 
 ## pixels
-**Usage:** pixels    
-Draws a simple pixel pattern on the display.
- 
-## linetest
-**Usage:** linetest   
-Draws various lines on the display.
+**Usage:** pixels [-r 0|1|2|3]   
+Draws a simple pixel pattern on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+
+## linetest  
+**Usage:** linetest [-r 0|1|2|3] 
+Draws various lines on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
  
 ## lines
-**Usage:** lines   
-Draws a simple line pattern on the display.
+**Usage:** lines [-r 0|1|2|3]   
+Draws a simple line pattern on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
   
 ## reversed
-**Usage:** reversed  
-Draws a line pattern reversed (black on white) on the display.
+**Usage:** reversed [-r 0|1|2|3]  
+Draws a line pattern reversed (black on white) on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
      
 ## boxes
-**Usage:** boxes  
-Draws rectangles in a pattern on the display.
+**Usage:** boxes [-r 0|1|2|3]  
+Draws rectangles in a pattern on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## blocks
-**Usage:** blocks  
-Draws filled rectangles in a pattern on the display.
+**Usage:** blocks [-r 0|1|2|3]    
+Draws filled rectangles in a pattern on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## bitmaps
-**Usage:** bitmaps  
-Draws Adafruit bitmaps on the display.
+**Usage:** bitmaps [-r 0|1|2|3]    
+Draws Adafruit bitmaps on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## snowflakes
-**Usage:** snowflakes  
-Draws falling snowflake bitmaps on the display.
+**Usage:** snowflakes [-r 0|1|2|3]    
+Draws falling snowflake bitmaps on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## charset
-**Usage:** charset  
-Draws the printable ASCII character set on the display.
+**Usage:** charset [-r 0|1|2|3]
+Draws the printable ASCII character set on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## helloworld
-**Usage:** helloworld  
-Draws the classic text greeting on the display.
+**Usage:** helloworld [-r 0|1|2|3]
+Draws the classic text greeting on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## textbg
-**Usage:** textbg  
-Draws text strings on the display, using the normal, inverse and overlay text options.
+**Usage:** textbg [-r 0|1|2|3]
+Draws text strings on the display, using the normal, inverse and overlay text options. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## align
-**Usage:** align  
-Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment.
+**Usage:** align [-r 0|1|2|3]
+Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 Repository Contents
 -------------------

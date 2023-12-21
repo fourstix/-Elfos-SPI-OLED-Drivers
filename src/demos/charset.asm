@@ -26,11 +26,11 @@ start:      br    main
             ; Build information
             ; Build date
 date:       db    80h+12         ; Month, 80h offset means extended info
-            db    2              ; Day
+            db    19             ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    3              ; build
+build:      dw    4              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -42,10 +42,29 @@ main:       lda   ra                    ; move past any spaces
             dec   ra                    ; move back to non-space character
             ldn   ra                    ; get byte
             lbz   good                  ; jump if no argument given
-            ; otherwise display usage message
-            call  o_inmsg               
-            db    'Usage: charset',10,13,0
-            return                      ; Return to Elf/OS
+
+            smi   '-'                   ; was it a dash to indicate option?
+            lbnz  usage                 ; if not a dash, show error  
+            inc   ra                    ; move to next character
+            lda   ra                    ; check for fill option 
+            smi   'r'
+            lbnz  usage                 ; bad option, show usage message
+       
+sp_1:       lda   ra                    ; move past any spaces
+            smi   ' '
+            lbz   sp_1
+
+            dec   ra                    ; move back to non-space character
+            ldn   ra                    ; get rotation value
+            smi   '0'                   ; should be 0, 1, 2 or 3
+            lbnf  usage                 ; if less than zero, show usage message
+            ldn   ra                    ; check again
+            smi   '4'                   ; should be 0, 1, 2 or 3
+            lbdf  usage                 ; if greater than 3, show usage message
+            load  rf, rotate            ; point rf to rotate flag
+            ldn   ra                    ; get rotation paramater
+            smi   '0'                   ; convert character to digit value
+            str   rf                    ; save as rotate flag
 
 good:       call  oled_check_driver
             lbdf  error
@@ -60,16 +79,20 @@ good:       call  oled_check_driver
             ldi   GFX_TXT_NORMAL       ; clear background
             phi   r9    
           
+            load   rf, rotate           ; set rotation flag
+            ldn    rf
+            plo    r9
+          
             load  r7, 0                 ;---- Set R7 at origin (0,0)
             ldi   ' '                   ; set up first character
-            plo   r9
+            plo   r8
 
 draw_ch:    glo   rc                    ; get counter
             lbz   show                  ; when done, show display
                           
             call  oled_print_char       ; draw character   
 
-            inc   r9                    ; go to next character
+            inc   r8                    ; go to next character
             dec   rc                    ; count down
             lbr   draw_ch               ; keep going until all chars drawn
             
@@ -78,9 +101,17 @@ show:       call  oled_init_display     ; setup the display
 
             clc
             return                      ; return to Elf/OS
+
+usage:      call  o_inmsg               ; otherwise display usage message
+            db    'Usage: charset [-r n, where n = 0|1|2|3]',10,13
+            db    'Option: -r n, rotate by n*90 degrees counter-clockwise',10,13,0
+            abend                       ; and return to os            
                       
 error:      call o_inmsg
             db 'Error drawing character set.',10,13,0
             abend                       ; return to Elf/OS with an error code
+              
+          ;---- rotation flag
+rotate:     db 0            
                       
             end   start
