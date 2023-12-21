@@ -40,7 +40,7 @@ OLED SPI Library API
 <tr><td>oled_init_display</td><td colspan="2"> (None) </td><td colspan="5">Initialize the SPI OLED display, returns error (DF = 1) if initialization failed.</td></tr>
 <tr><td>oled_update_display</td><td colspan="2"> (None) </td><td colspan="5">Update the SPI OLED display with the contents of the display buffer, returns error (DF = 1) if update failed.</td></tr>
 <tr><td>oled clear_buffer</td><td colspan="2"> (None) </td><td colspan="5">Clears all bits in the buffer memory</td></tr>
-<tr><td>fill_buffer</td><td colspan="2"> (None) </td><td colspan="5">Sets all bits in the buffer memory</td></tr>
+<tr><td>oled_fill_buffer</td><td colspan="2"> (None) </td><td colspan="5">Sets all bits in the buffer memory</td></tr>
 <tr><th rowspan="2">API Name</th><th>R7.1</th><th>R7.0</th><th>R8.0</th><th>R9.1</th><th>R9.0</th><th colspan="2">RF</th></tr>
 <tr><th colspan="7">Notes</th></tr>
 <tr><td rowspan="2">oled_print_char</td><td>origin y</td><td>origin x</td><td>character</td><td>text style</td><td>rotation</td><th colspan="2">-</th></tr>
@@ -61,7 +61,7 @@ OLED SPI Library API
 <table>
 <tr><th>Name</th><th>Description</th><tr>
 <tr><td>GFX_TXT_NORMAL</td><td>Background pixels are cleared and character pixels are set</td><tr>
-<tr><td>GFX_TXT_INVERSE</td><td>Background pixels are set and character pixels are clear</td><tr>
+<tr><td>GFX_TXT_INVERSE</td><td>Background pixels are set and character pixels are cleared</td><tr>
 <tr><td>GFX_TXT_OVERLAY</td><td>Background pixels unchanged and character pixels are inverted</td><tr>
 </table>
 
