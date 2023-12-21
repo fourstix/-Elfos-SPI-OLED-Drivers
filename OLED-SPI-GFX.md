@@ -44,9 +44,9 @@ OLED SPI Library API
 <tr><th rowspan="2">API Name</th><th>R7.1</th><th>R7.0</th><th>R8.0</th><th>R9.1</th><th>R9.0</th><th colspan="2">RF</th></tr>
 <tr><th colspan="7">Notes</th></tr>
 <tr><td rowspan="2">oled_print_char</td><td>origin y</td><td>origin x</td><td>character</td><td>text style</td><td>rotation</td><th colspan="2">-</th></tr>
-<tr><td colspan="7">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable.<br> On return r7 points to next character cursor position (text wraps).</td></tr>
+<tr><td colspan="7">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable. On return r7 points to next character cursor position (text wraps).</td></tr>
 <tr><td rowspan="2">oled_print_string</td><td>origin y</td><td> origin x</td><td>character</td><td>text style</td><td>-</td><td colspan="2">Pointer to null terminated ASCII string.</td></tr>
-<tr><td colspan="7">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable.<br> On return r7 points to next character cursor position (text wraps).</td></tr>
+<tr><td colspan="7">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable. On return r7 points to next character cursor position (text wraps).</td></tr>
 </table>
 
 ## Color Constants
