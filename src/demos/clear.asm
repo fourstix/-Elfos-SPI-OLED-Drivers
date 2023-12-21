@@ -23,12 +23,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+11            ; Month, 80h offset means extended info
-            db      27                ; Day
+date:       db      80h+12            ; Month, 80h offset means extended info
+            db      17                ; Day
             dw      2023              ; year
            
             ; Current build number
-build:      dw      3                 ; build
+build:      dw      4                 ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 

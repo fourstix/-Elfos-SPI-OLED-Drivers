@@ -30,6 +30,7 @@ OLED SPI Library API
 * r7.1 = origin y (row value, 0 to 63)
 * r7.0 = origin x (column value, 0 to 127)
 * r9.1 = color
+* r9.0 = rotation
 * r8.0 = ASCII character to draw
 
 
@@ -62,6 +63,17 @@ OLED SPI Library API
 <tr><td>GFX_TXT_NORMAL</td><td>Background pixels are cleared and character pixels are set</td><tr>
 <tr><td>GFX_TXT_INVERSE</td><td>Background pixels are set and character pixels are clear</td><tr>
 <tr><td>GFX_TXT_OVERLAY</td><td>Background pixels unchanged and character pixels are inverted</td><tr>
+</table>
+
+## Rotation Constants
+<table>
+<tr><th>Name</th><th>value</th><th>Description</th><tr>
+<tr><td>ROTATE_0</td><td rowspan="3">0</td><td rowspan="3">No Rotation (upright)</td><tr>
+<tr><td>ROTATE_NONE</td></tr>
+<tr><td>ROTATE_360</td></tr>
+<tr><td>ROTATE_90</td><td>1</td><td>Rotate display 90 degrees counter-clockwise</td><tr>
+<tr><td>ROTATE_180</td><td>2</td><td>Rotate display 180 degrees counter-clockwise (upside -down)</td><tr>
+<tr><td>ROTATE_270</td><td>3</td><td>Rotate display 270 degrees counter-clockwise (90 degrees clockwise)</td><tr>
 </table>
 
 ## Private Methods

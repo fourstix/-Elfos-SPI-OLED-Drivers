@@ -39,7 +39,8 @@
 ; Parameters: 
 ;   r7.1 - y row
 ;   r7.0 - x column
-;   r9.1 - text style (GFX_TXT_NORMAL, GFX_TXT_INVERSE or GFX_TXT_OVERLAY)
+;   r9.1 - color (text style: GFX_TXT_NORMAL, GFX_TXT_INVERSE or GFX_TXT_OVERLAY)
+;   r9.0 - rotation
 ;   r8.0 - ASCII character to print
 ;
 ; Note: Checks origin x,y adjusts to next valid cursor position

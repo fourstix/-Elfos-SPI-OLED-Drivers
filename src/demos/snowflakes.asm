@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+11         ; Month, 80h offset means extended info
-            db    30             ; Day
+date:       db    80h+12         ; Month, 80h offset means extended info
+            db    19             ; Day
             dw    2023           ; year
            
             ; Current build number
-build:      dw    3              ; build
+build:      dw    4              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -41,12 +41,29 @@ main:       lda   ra                    ; move past any spaces
             dec   ra                    ; move back to non-space character
             ldn   ra                    ; get byte
             lbz   good                  ; jump if no argument given
-            ; otherwise display usage message
-            call  o_inmsg               
-            db    'Usage: snowflakes',10,13,0
-            call  o_inmsg               
-            db    'Press input (/EF4) to quit program.',10,13,0
-            return                      ; return to Elf/OS
+
+            smi   '-'                   ; was it a dash to indicate option?
+            lbnz  usage                 ; if not a dash, show error  
+            inc   ra                    ; move to next character
+            lda   ra                    ; check for fill option 
+            smi   'r'
+            lbnz  usage                 ; bad option, show usage message
+       
+sp_1:       lda   ra                    ; move past any spaces
+            smi   ' '
+            lbz   sp_1
+
+            dec   ra                    ; move back to non-space character
+            ldn   ra                    ; get rotation value
+            smi   '0'                   ; should be 0, 1, 2 or 3
+            lbnf  usage                 ; if less than zero, show usage message
+            ldn   ra                    ; check again
+            smi   '4'                   ; should be 0, 1, 2 or 3
+            lbdf  usage                 ; if greater than 3, show usage message
+            load  rf, rotate            ; point rf to rotate flag
+            ldn   ra                    ; get rotation paramater
+            smi   '0'                   ; convert character to digit value
+            str   rf                    ; save as rotate flag
 
 good:       call  oled_check_driver
             lbdf  error
@@ -57,17 +74,33 @@ good:       call  oled_check_driver
                   
             
 repeat:     load  rc, $10               ; set up loop counter            
-            load  ra, rand_xy           ; point to random positions
+            load  rd, rand_xy           ; point to random positions
 
+            load  rf, rotate            ; set rotation flag
+            ldn   rf
+            plo   r9
             
+            call  gfx_dimensions        ; get dimensions in ra      
+
             ;----- set up registers for  snowflakes
-snowflake:  lda   ra                    ; get random x
+snowflake:  lda   rd                    ; get random x
             plo   r7                    ; set as x origin
-            lda   ra                    ; get random y
+            lda   rd                    ; get random y
             phi   r7                    ; set as y origin
-            load  r8, $1010             ; bitmap h = 16, w = 16
+            
+            glo   r9
+            ani   $01                   ; check lsb for portrait, r=1 or r=3
+            lbz   landscape
+            glo   r7                    ; for portrait mode
+            shr                         ; divide x by 2
+            plo   r7                    ; multiply y by 2
+            ghi   r7
+            shl 
+            phi   r7
+                          
+landscape:  load  r8, $1010             ; bitmap h = 16, w = 16
   
-fall:       ldi   GFX_SET              ; set color 
+fall:       ldi   GFX_SET               ; set color 
             phi   r9
             load  rf, flake             ; point to bitmap buffer                         
             call  gfx_draw_bitmap       ; draw bitmap at random location
@@ -92,8 +125,11 @@ press1:     dec   rb
             
             ghi   r7                    ; move flake down
             adi   04                    ; 4 pixels
-            phi   r7 
-            smi   $3F                   ; when we reach the end (63)          
+            phi   r7
+            ghi   ra                    ; get Ymax value
+            str   r2                    ; save Ymax in M(X) 
+            ghi   r7                    ; check y value
+            sm                          ; to see if we reached (or passed) the end          
             lbdf  nextflake             ; do the next flake      
             lbr   fall                  ; otherwise keep moving down            
             
@@ -104,6 +140,12 @@ nextflake:  dec   rc                    ; count down
 done:       call  oled_clear_buffer     ; clear out buffer
             call  oled_update_display 
             return                      ; return to Elf/OS
+
+usage:      call  o_inmsg               ; otherwise display usage message
+            db    'Usage: snowflakes [-r n, where n = 0|1|2|3]',10,13
+            db    'Option: -r n, rotate by n*90 degrees counter clockwise',10,13
+            db    'Press input (/EF4) to quit program.',10,13,0
+            abend                       ; and return to os
                       
 error:      call o_inmsg
             db 'Error drawing bitmap.',10,13,0
@@ -115,9 +157,12 @@ flake:    db $01, $00, $03, $80, $01, $00, $C1, $06, $E1, $0E, $19, $30, $07, $C
           db $07, $C0, $19, $30, $E1, $0E, $C1, $06, $01, $00, $03, $80, $01, $00, $00, $00
           
           ;--- pseudo random cooridinates x = rand(111), y = rand(20) 
-          ;   x0  y0  x1   y1   x2  y2  x3  y3  x4  y4   x5  y5 x6   y6  x7  y7 
-rand_xy:  db 111,  4, 74,  0,  103, 14, 11,  9, 69,  7,  21,  3, 0,  13,  9, 15
-          ;   x8   y8  x9  y9   xA  yA  xB  yB  xC  yC   xD  yD xE   yE  xF  yF 
-          db  78,  11, 108, 7,  64,  1, 49,  0,  9,  15, 101, 5, 24, 16, 90, 13  
+          ;   x0  y0   x1  y1  x2  y2  x3  y3  x4  y4   x5  y5  x6  y6  x7  y7 
+rand_xy:  db  95,  4,  74, 0,  93, 14, 11,  9, 69,  7,  21,  3,  0, 13,  9, 15
+          ;   x8   y8  x9  y9  xA  yA  xB  yB  xC  yC   xD  yD  xE  yE  xF  yF 
+          db  78,  11, 96, 7,  64,  1, 49,  0,  9,  15, 91, 5,  24, 16, 90, 13  
+
+          ;---- rotation flag
+rotate:     db 0            
           
             end   start

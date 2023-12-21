@@ -39,7 +39,8 @@
 ; Parameters: 
 ;   r7.1 - y (row)
 ;   r7.0 - x (column)
-;   r9.1 - background (GFX_ BG_TRANSPARENT OR GFX_OPAQUE)
+;   r9.1 - color (text style: GFX_TXT_NORMAL, GFX_TXT_INVERSE or GFX_TXT_OVERLAY)
+;   r9.0 - rotation
 ;   rf   - pointer to null-terminated ASCII string
 ;
 ; Note: Checks x,y values, error if out of bounds. 

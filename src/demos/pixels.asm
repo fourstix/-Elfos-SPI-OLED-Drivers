@@ -24,12 +24,12 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db      80h+11         ; Month, 80h offset means extended info
-            db      27             ; Day
+date:       db      80h+12         ; Month, 80h offset means extended info
+            db      17             ; Day
             dw      2023           ; year
            
             ; Current build number
-build:      dw      3             ; build
+build:      dw      4              ; build
             db    'Copyright 2023 by Gaston Williams',0
 
 
@@ -40,16 +40,40 @@ main:       lda   ra                    ; move past any spaces
             lbz   main
             dec   ra                    ; move back to non-space character
             ldn   ra                    ; get byte
-            lbz   good                  ; jump if no argument given
-            call  o_inmsg               ; otherwise display usage message
-            db    'Usage: pixels',10,13,0
-            return                      ; and return to os
+            lbz   show_it               ; jump if no argument given
 
-good:       call  oled_check_driver
+good:       smi     '-'                 ; was it a dash to indicate option?
+            lbnz    usage               ; if not a dash, show error  
+            inc     ra                  ; move to next character
+            lda     ra                  ; check for fill option 
+            smi     'r'
+            lbnz    usage               ; bad option, show usage message
+       
+sp_1:       lda     ra                  ; move past any spaces
+            smi     ' '
+            lbz     sp_1
+
+            dec     ra                  ; move back to non-space character
+            ldn     ra                  ; get rotation value
+            smi     '0'                 ; should be 0, 1, 2 or 3
+            lbnf    usage               ; if less than zero, show usage message
+            ldn     ra                  ; check again
+            smi     '4'                 ; should be 0, 1, 2 or 3
+            lbdf    usage               ; if greater than 3, show usage message
+            load    rf, rotate          ; point rf to rotate flag
+            ldn     ra                  ; get rotation paramater
+            smi     '0'                 ; convert character to digit value
+            str     rf                  ; save as rotate flag
+
+show_it:    call  oled_check_driver
             lbdf  error
               
             call  oled_clear_buffer     ; clear out buffer
 
+            load    rf, rotate          ; set rotation flag
+            ldn     rf
+            plo     r9
+            
             ldi    GFX_SET              ; set color 
             phi    r9
               
@@ -144,10 +168,17 @@ good:       call  oled_check_driver
             
 done:       clc   
             return
+
+usage:      call  o_inmsg               ; otherwise display usage message
+            db    'Usage: pixels [-r n, where n = 0|1|2|3]',10,13
+            db    'Option: -r n, rotate by n*90 degrees counter clockwise',10,13,0
+            abend                       ; and return to os
             
 error:      call o_inmsg
             db 'Error setting pixel.',10,13,0
             abend
+    
+            ;---- rotation flag
+rotate:     db 0            
             
-; buffer:     ds    BUFFER_SIZE
             end   start
