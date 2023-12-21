@@ -67,13 +67,13 @@ OLED SPI Library API
 
 ## Rotation Constants
 <table>
-<tr><th>Name</th><th>value</th><th>Description</th><tr>
-<tr><td>ROTATE_0</td><td rowspan="3">0</td><td rowspan="3">No Rotation (upright)</td><tr>
+<tr><th>Name</th><th>value</th><th>Description</th></tr>
+<tr><td>ROTATE_0</td><td rowspan="3">0</td><td rowspan="3">No Rotation (upright)</td></tr>
 <tr><td>ROTATE_NONE</td></tr>
 <tr><td>ROTATE_360</td></tr>
-<tr><td>ROTATE_90</td><td>1</td><td>Rotate display 90 degrees counter-clockwise</td><tr>
-<tr><td>ROTATE_180</td><td>2</td><td>Rotate display 180 degrees counter-clockwise (upside -down)</td><tr>
-<tr><td>ROTATE_270</td><td>3</td><td>Rotate display 270 degrees counter-clockwise (90 degrees clockwise)</td><tr>
+<tr><td>ROTATE_90</td><td>1</td><td>Rotate display 90 degrees counter-clockwise</td></tr>
+<tr><td>ROTATE_180</td><td>2</td><td>Rotate display 180 degrees counter-clockwise (upside -down)</td></tr>
+<tr><td>ROTATE_270</td><td>3</td><td>Rotate display 270 degrees counter-clockwise (90 degrees clockwise)</td></tr>
 </table>
 
 ## Private Methods
@@ -108,19 +108,18 @@ The following methods are implemented in this library, oled_spi.lib, and are cal
 * ra.1 = display height 
 * ra.0 = display width
 * r9.1 = color
-* r9.0 = rotation
 * r8.0 = line length
 * r7.1 = origin y (row value, 0 to display height-1)
 * r7.0 = origin x (column value, 0 to display width-1)
 
 <table>
-<tr><th>Name</th><th>R7.1</th><th>R7.0</th><th>R8.0</th><th>R9.1</th><th>R9.0</th><th>Returns</th></tr>
-<tr><td rowspan="2">gfx_disp_size</th><td rowspan="2" colspan="5">(No Inputs)</td><td>RA.1 = device height</td></tr>
+<tr><th>Name</th><th>R7.1</th><th>R7.0</th><th>R8.0</th><th>R9.1</th><th>Returns</th></tr>
+<tr><td rowspan="2">gfx_disp_size</th><td rowspan="2" colspan="4">(No Inputs)</td><td>RA.1 = device height</td></tr>
 <tr><td>RA.0 = display width</td></tr>
-<tr><td>oled_clear_buffer</th><td colspan="5">(No Inputs)</td><td>DF = 1, if error</td></tr>
-<tr><td>oled_write_pixel</td><td>y</td><td>x</td><td> - </td><td>color</td><td> - </td><td>DF = 1, if error</td></tr>
-<tr><td>oled_fast_h_line</td><td>origin y</td><td>origin x</td><td>length</td><td>color</td><td> - </td><td>DF = 1, if error</td></tr>
-<tr><td>oled_fast_v_line</td><td>origin y</td><td>origin x</td><td>length</td><td>color</td><td> - </td><td>DF = 1, if error</td></tr>
+<tr><td>oled_clear_buffer</th><td colspan="4">(No Inputs)</td><td>DF = 1, if error</td></tr>
+<tr><td>oled_write_pixel</td><td>y</td><td>x</td><td> - </td><td>color</td><td>DF = 1, if error</td></tr>
+<tr><td>oled_fast_h_line</td><td>origin y</td><td>origin x</td><td>length</td><td>color</td><td>DF = 1, if error</td></tr>
+<tr><td>oled_fast_v_line</td><td>origin y</td><td>origin x</td><td>length</td><td>color</td><td>DF = 1, if error</td></tr>
 </table>
 
 License Information
