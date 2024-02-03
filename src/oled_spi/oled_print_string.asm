@@ -41,6 +41,7 @@
 ;   r7.0 - x (column)
 ;   r9.1 - color (text style: GFX_TXT_NORMAL, GFX_TXT_INVERSE or GFX_TXT_OVERLAY)
 ;   r9.0 - rotation
+;   r8.1 - character scale factor (0,1 = no scaling, or 2-8)
 ;   rf   - pointer to null-terminated ASCII string
 ;
 ; Note: Checks x,y values, error if out of bounds. 

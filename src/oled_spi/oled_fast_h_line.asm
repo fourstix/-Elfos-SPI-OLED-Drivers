@@ -97,6 +97,7 @@ wfh_chk:    glo     r8                ; check length count
 
 wh_done:    pop     rc
             pop     rd
+            clc                       ; clear DF after shifting
             return
 
             endp

@@ -23,10 +23,10 @@
                 smi   0C0h            ; if not long jump, assume never loaded
                 lbnz  no_driver              
                 lda   rd              ; get hi byte of address
-                smi   05h             ; check to see if points to Kernel return
+                smi   03h             ; check to see if points to Kernel return
                 lbnz  loaded          ; if not, assume driver is already loaded
                 ldn   rd              ; get the lo byte of address
-                smi   01bh            ; check to see if points to kernel return 
+                smi   07eh            ; check to see if points to kernel return  
                 lbnz  loaded          ; if not, assume driver is already loaded
 
 no_driver:      load  rf, no_oled

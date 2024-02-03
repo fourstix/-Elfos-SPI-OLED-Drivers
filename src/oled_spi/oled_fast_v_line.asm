@@ -18,9 +18,12 @@
 ; SPI Expansion Board for the 1802/Mini Computer hardware
 ; Copyright 2022 by Tony Hefner 
 ;-------------------------------------------------------------------------------
+#include    ../include/bios.inc
+#include    ../include/kernel.inc
 #include    ../include/ops.inc
 #include    ../include/gfx_display.inc
 #include    ../include/oled_spi_def.inc
+#include    ../include/gfx_lib.inc
 
 ;-------------------------------------------------------
 ; Private routine - called only by the public routines
@@ -97,7 +100,7 @@
             
             ldn    rb               ; get premask byte from look up table
             phi    ra               ; save in ra.1
-            
+
             ;---- check if h is less than mod value
             glo    ra               ; get mod value
             str    r2               ; save at M(X)
@@ -110,25 +113,27 @@
             plo    rc               ; save shift counter
             ldi    $FF              ; set initial bit shift mask
             phi    rc               ; save bit shift mask in rc.1
+
 fwv_shft1:  glo    rc               ; check counter
-            lbz    fwv_mask1
-            ghi    rc               ; shift bit mask 1 bit left
-            shl    
+            lbz    fwv_shft2
+            ghi    rc               ; shift bit mask 1 bit right
+            shr    
             phi    rc
             dec    rc               ; count down
             lbr    fwv_shft1        ; keep going until shift mask done
 
-            ghi    rc               ; get shifted bit mask
+fwv_shft2:  ghi    rc               ; get shifted bit mask
             str    r2               ; save in M(X)
             ghi    ra               ; get premask
             and                     ; clear out unused high bits
             phi    ra               ; save premask
+            
 fwv_mask1:  ghi    r9               ; check color
             lbz    clr_mask1        ; check for GFX_CLEAR  
             shl                     ; check for GFX_INVERSE
             lbdf   inv_mask1        ; DF =1, means GFX_INVERSE
             
-            ghi    ra               ; get premask for GFX_SET
+set_mask1:  ghi    ra               ; get premask for GFX_SET
             str    r2               ; save premask in M(X) 
             ldn    rd               ; get first byte
             or                      ; or to set selected bits
