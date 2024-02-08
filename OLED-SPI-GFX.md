@@ -29,8 +29,9 @@ OLED SPI Library API
 * rf = pointer to null-terminated string to draw
 * r7.1 = origin y (row value, 0 to 63)
 * r7.0 = origin x (column value, 0 to 127)
-* r9.1 = color
+* r9.1 = text style, color
 * r9.0 = rotation
+* r8.1 = text size
 * r8.0 = ASCII character to draw
 
 
@@ -43,9 +44,9 @@ OLED SPI Library API
 <tr><td>oled_fill_buffer</td><td colspan="3"> (None) </td><td colspan="5">Sets all bits in the buffer memory</td></tr>
 <tr><th rowspan="2">API Name</th><th>R7.1</th><th>R7.0</th><th>R8.1</th><th>R8.0</th><th>R9.1</th><th>R9.0</th><th>RF</th></tr>
 <tr><th colspan="8">Notes</th></tr>
-<tr><td rowspan="2">oled_print_char</td><td>origin y</td><td>origin x</td><td>character</td><td>text size</td><td>text style</td><td>rotation</td><td>-</td></tr>
+<tr><td rowspan="2">oled_print_char</td><td>origin y</td><td>origin x</td><td>text size</td><td>character</td><td>text style</td><td>rotation</td><td>-</td></tr>
 <tr><td colspan="8">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable. On return r7 points to next character cursor position (text wraps).</td></tr>
-<tr><td rowspan="2">oled_print_string</td><td>origin y</td><td> origin x</td><td>character</td><td>text size</td><td>text style</td><td>-</td><td>Pointer to null terminated ASCII string.</td></tr>
+<tr><td rowspan="2">oled_print_string</td><td>origin y</td><td> origin x</td><td>text size</td><td>character</td><td>text style</td><td>-</td><td>Pointer to null terminated ASCII string.</td></tr>
 <tr><td colspan="8">Checks origin x,y values, returns error (DF = 1) if out of bounds. Checks ASCII character value, draws DEL (127) if non-printable. On return r7 points to next character cursor position (text wraps).</td></tr>
 </table>
 
@@ -83,7 +84,7 @@ OLED SPI Library API
 <tr><td>ROTATE_NONE</td></tr>
 <tr><td>ROTATE_360</td></tr>
 <tr><td>ROTATE_90</td><td>1</td><td>Rotate display 90 degrees counter-clockwise</td></tr>
-<tr><td>ROTATE_180</td><td>2</td><td>Rotate display 180 degrees counter-clockwise (upside -down)</td></tr>
+<tr><td>ROTATE_180</td><td>2</td><td>Rotate display 180 degrees counter-clockwise (upside-down)</td></tr>
 <tr><td>ROTATE_270</td><td>3</td><td>Rotate display 270 degrees counter-clockwise (90 degrees clockwise)</td></tr>
 </table>
 
