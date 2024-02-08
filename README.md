@@ -113,19 +113,19 @@ GFX 1802 Graphics Library
 The common [GFX 1802 Graphics Library](https://github.com/fourstix/GFX-1802-Library) is available in the [GFX 1802 Library](https://github.com/fourstix/GFX-1802-Library) repository.
 
 
+OLED Demo Programs
+------------------
+
 <table class="table table-hover table-striped table-bordered">
   <tr align="center">
    <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/spaceship.jpg"></td>
    <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/show_imp.jpg"></td> 
   </tr>
   <tr align="center">
-   <td >Spaceship Demo.</td>
-   <td >Show Imp Demo.</td>
+   <td >Spaceship Demo</td>
+   <td >Show Imp Demo</td>
   </tr> 
 </table>
-
-OLED Demo Programs
-------------------
 
 The appropriate OLED display driver should be loaded before running these programs. 
 
@@ -147,6 +147,37 @@ Show the classic Elf spaceship program graphic on the display.
  
 OLED Graphics Demos
 -------------------
+
+<table class="table table-hover table-striped table-bordered">
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/bitmaps.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/lines.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Bitmaps Demo</td>
+   <td >Lines Demo</td>
+  </tr> 
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/tao.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/triangles.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Tao Demo</td>
+   <td >Triangles Demo</td>
+  </tr>
+  <tr align="center">
+   <td >Bitmaps Demo</td>
+   <td >Lines Demo</td>
+  </tr> 
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/charset.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/textbg.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Charset Demo</td>
+   <td >Textbg Demo</td>
+  </tr>  
+</table>
 
 These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [OLED SPI graphics device library](OLED-SPI-GFX.md) to write to the display through the appropriate OLED video driver.  They all support rotation of the display through the -r option.
 
