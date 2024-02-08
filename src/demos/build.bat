@@ -45,3 +45,12 @@
 
 [Your_Path]\Asm02\asm02 -L -D1802MINIPLUS textbg.asm
 [Your_Path]\Link02\link02 -e -s textbg.prg check_oled_driver.prg -l ..\lib\gfx_oled.lib
+
+[Your_Path]\Asm02\asm02 -L -D1802MINIPLUS align.asm
+[Your_Path]\Link02\link02 -e -s align.prg -l ..\lib\oled_spi.lib -l ..\lib\gfx.lib
+
+[Your_Path]\Asm02\asm02 -L -D1802MINIPLUS triangles.asm
+[Your_Path]\Link02\link02 -e -s triangles.prg -l ..\lib\oled_spi.lib -l ..\lib\gfx.lib
+
+[Your_Path]\Asm02\asm02 -L -D1802MINIPLUS tao.asm
+[Your_Path]\Link02\link02 -e -s tao.prg -l ..\lib\oled_spi.lib  -l ..\lib\gfx.lib -l ..\lib\util.lib

@@ -25,13 +25,13 @@ start:      br    main
 
             ; Build information
             ; Build date
-date:       db    80h+12         ; Month, 80h offset means extended info
-            db    19             ; Day
-            dw    2023           ; year
+date:       db    80h+2          ; Month, 80h offset means extended info
+            db    3              ; Day
+            dw    2024           ; year
            
             ; Current build number
-build:      dw    4              ; build
-            db    'Copyright 2023 by Gaston Williams',0
+build:      dw    5              ; build
+            db    'Copyright 2024 by Gaston Williams',0
 
 
             ; Main code starts here, check provided argument
@@ -80,15 +80,40 @@ good:       call  oled_check_driver
 
             ldi   GFX_TXT_NORMAL        ; background cleared
             phi   r9    
+            ldi   GFX_TXT_SMALL         ; normal sized text
+            phi   r8
+
             load  rf, greeting          ; set string buffer
             
-            load  r7, $0C00             ; Set R7 to beginning of line 12
+            load  r7, $0C00             ; Set cursor to start of line 12
 
-            call  oled_print_string     ; draw character   
-            
+            call  oled_print_string     ; draw character  
+                       
 show:       call  oled_init_display     ; setup the display
             call  oled_update_display   ; update the display
+            
+            ;---- wait half a second   
+            load  rc, $A220             ; wait about half a second
+wait1:      nop                         ; cycles for delay
+            dec   rc
+            lbrnz rc, wait1
 
+            
+            call  oled_clear_buffer     ; clear out buffer
+            lbdf  error
+            
+            ldi   GFX_TXT_NORMAL        ; background cleared
+            phi   r9    
+            ldi   GFX_TXT_LARGE         ; large sized text
+            phi   r8
+
+            load  rf, response          ; set string buffer
+            
+            load  r7, $0000             ; Set cursor to home
+
+            call  oled_print_string     ; draw character  
+            
+            call  oled_update_display   ; update the display           
             clc
             return
 
@@ -101,8 +126,8 @@ error:      call o_inmsg
             db 'Error drawing string.',10,13,0
             abend
             
-greeting:   db 'Hello, World!',0            
-                    
+greeting:   db 'Hello, World!',0     
+response:   db 'Hi!',0            
 
             ;---- rotation flag
 rotate:     db 0            

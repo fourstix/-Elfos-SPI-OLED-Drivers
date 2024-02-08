@@ -46,12 +46,12 @@
                 br  start             ; Jump past build info to code
 
 ; Build information                   
-binfo:          db  1+80h         ; Month, 80H offset means extended info
-                db  11            ; Day
+binfo:          db  2+80h         ; Month, 80H offset means extended info
+                db  7             ; Day
                 dw  2024          ; Year
 
 ; Current build number
-build:          dw  3
+build:          dw  4
 
 ; Must end with 0 (null)
 copyright:      db      'Copyright (c) 2024 by Gaston Williams',0
@@ -98,12 +98,22 @@ load:           LOAD rc, END_DRIVER - BEGIN_DRIVER        ; load block size
                                     
                 COPY rf, rd           ; move destination in rf into rd               
                 LOAD rf, BEGIN_DRIVER ; rf points to source driver code
-                ; RC already has the count of bytes allocated
-                ; LOAD rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
+                ; RC has the count of bytes allocated
+                push  rc 
+                LOAD rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
                 CALL f_memcpy         ; copy the video driver into memory
-
-                lbr  done             ; we're done!
-                                                                                               
+                ; RD points to next byte after copied block
+                pop   rc              ; restore size count
+                load  rb, END_DRIVER - BEGIN_DRIVER  ; load code block size
+                SUB16 rc,rb           ; rc = rc - rb = allocated size - code size
+pad:            glo   rc              ; check for remaining bytes (always less than 256)
+                lbz   done            ; if rc.0 = 0, we're done
+                ldi   0
+                str   rd              ; zero out extra bytes
+                inc   rd
+                dec   rc              ; count down              
+                lbr   pad             ; repeat until we're done!
+                                                             
 unload:         LOAD rd, O_VIDEO+1    ; point rd to video driver vector in kernel
                 lda  rd               ; get hi byte
                 phi  rf

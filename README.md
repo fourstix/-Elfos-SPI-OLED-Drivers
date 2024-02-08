@@ -176,7 +176,7 @@ Draws the printable ASCII character set on the display. The option -r n, where n
 
 ## helloworld
 **Usage:** helloworld [-r 0|1|2|3]
-Draws the classic text greeting on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+Draws the classic text greeting on the display in small text.  Followed by a response in large text. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## textbg
 **Usage:** textbg [-r 0|1|2|3]
@@ -185,6 +185,14 @@ Draws text strings on the display, using the normal, inverse and overlay text op
 ## align
 **Usage:** align [-r 0|1|2|3]
 Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+
+## tao
+**Usage:** tao [-r 0|1|2|3]
+Draws a yin yang symbol on the display to show the circle and arc functions. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+
+## triangles
+**Usage:** triangles [-r 0|1|2|3]
+Draws a set of triangles on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 Repository Contents
 -------------------
@@ -227,10 +235,12 @@ Repository Contents
   * reversed.asm - Demo program to draw lines in a reversed pattern (black on white) on the display screen.
   * snowflakes.asm - Demo program to draw falling snowflake bitmaps on the display screen.
   * charset.asm - Demo program to draw the printable ASCII character set on the display screen.
-  * helloworld.asm - Demo program to draw the classic greeting on the display screen.
+  * helloworld.asm - Demo program to draw the classic greeting and a response on the display screen.
   * textbg.asm - Demo program to draw text with normal, inverse and overlay options on the display screen.
   * direct.asm - Demo program to directly write pattern bytes to the display.
-  * align.asm - Demo program to draw lines, rectangles and inverset text to show pixel alignment.
+  * align.asm - Demo program to draw lines, rectangles and inverse text to show pixel alignment.
+  * tao - Demo program to draw a yin yang symbol on the display.
+  * triangles - Demo program to draw a set of triangles on the display.
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.
