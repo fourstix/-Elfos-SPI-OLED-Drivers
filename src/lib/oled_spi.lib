@@ -48,7 +48,7 @@ v0020
 :0020 27 9c 52 f8 ff f3 bc 9c 52 99 c2 00 37 fe c3 00
 :0030 3d 0d f1 5d c0 00 40 0d f2 5d c0 00 40 0d f3 5d
 :0040 88 c2 00 49 1d 28 c0 00 27 60 72 ac f0 bc 60 72
-:0050 ad f0 bd d5
+:0050 ad f0 bd fc 00 d5
 +0013
 +001b
 +001f
@@ -66,8 +66,8 @@ v0020
 \oled_display_ptr 0013
 :0010 18 d4 00 00 97 fa 07 c2 00 7a fd 08 aa f8 ea ab
 :0020 f8 00 bb 8a 52 8b f4 ab 9b 7c 00 bb 0b ba 8a 52
-:0030 88 f7 c3 00 4b fd 00 ac f8 ff bc 8c c2 00 4b 9c
-:0040 fe bc 2c c0 00 3b 9c 52 9a f2 ba 99 c2 00 5b fe
+:0030 88 f7 c3 00 4b fd 00 ac f8 ff bc 8c c2 00 46 9c
+:0040 f6 bc 2c c0 00 3b 9c 52 9a f2 ba 99 c2 00 5b fe
 :0050 c3 00 65 9a 52 0d f1 5d c0 00 6a 9a fb ff 52 0d
 :0060 f2 5d c0 00 6a 9a 52 0d f3 5d 8a 52 88 f7 cb 00
 :0070 d3 a8 8d fc 80 ad 9d 7c 00 bd 88 ff 08 cb 00 9c
@@ -106,8 +106,8 @@ v00a4
 }
 .big
 {oled_check_driver
-:0000 f8 56 ad f8 04 bd 4d ff c0 ca 00 18 4d ff 05 ca
-:0010 00 24 0d ff 1b ca 00 24 f8 27 af f8 00 bf d4 03
+:0000 f8 56 ad f8 04 bd 4d ff c0 ca 00 18 4d ff 03 ca
+:0010 00 24 0d ff 7e ca 00 24 f8 27 af f8 00 bf d4 03
 :0020 33 ff 00 d5 fc 00 d5 4e 6f 20 4f 4c 45 44 20 64
 :0030 72 69 76 65 72 20 6c 6f 61 64 65 64 2e 0a 0d 00
 +000a
@@ -141,15 +141,20 @@ v0020
 }
 .big
 {oled_fill_bg
-:0000 99 fe c3 00 36 99 73 89 73 98 73 88 73 97 73 87
-:0010 73 f8 06 a8 f8 08 b8 99 c2 00 21 f8 00 b9 c0 00
-/gfx_fill_rect 0025 00
-\gfx_fill_rect 0026
-:0020 24 f8 01 b9 d4 00 00 60 72 a7 f0 b7 60 72 a8 f0
-:0030 b8 60 72 a9 f0 b9 fc 00 d5
+:0000 99 fe c3 00 5d 9a 73 8a 73 99 73 89 73 98 73 88
+:0010 73 97 73 87 73 f8 06 aa f8 08 ba 98 c2 00 35 ff
+:0020 01 c2 00 35 a8 8a 52 f8 06 f4 aa 9a 52 f8 08 f4
+:0030 ba 28 ca 00 25 8a a8 9a b8 99 c2 00 43 f8 00 b9
+/gfx_fill_rect 0047 00
+\gfx_fill_rect 0048
+:0040 c0 00 46 f8 01 b9 d4 00 00 60 72 a7 f0 b7 60 72
+:0050 a8 f0 b8 60 72 a9 f0 b9 60 72 aa f0 ba fc 00 d5
 +0003
-+0019
-+001f
++001d
++0022
++0033
++003b
++0041
 }
 .big
 {oled_print_char
@@ -160,7 +165,9 @@ v0020
 /gfx_draw_char 000f 00
 :0000 99 73 89 73 98 73 88 73 d4 00 00 d4 00 00 d4 00
 \gfx_draw_char 0010
-:0010 00 17 60 72 a8 f0 b8 60 72 a9 f0 b9 fc 00 d5
+:0010 00 98 ca 00 17 f8 01 52 87 f4 a7 60 72 a8 f0 b8
+:0020 60 72 a9 f0 b9 fc 00 d5
++0013
 }
 .big
 {oled_print_string

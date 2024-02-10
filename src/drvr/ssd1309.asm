@@ -2,7 +2,7 @@
 ; ssd1309 - a video driver for updating an SSD1309 OLED display via
 ; the SPI Expansion Board for the 1802/Mini Computer. 
 ;
-; Copyright 2023 by Gaston Williams
+; Copyright 2024 by Gaston Williams
 ;
 ; Based on code from the Elf-Elfos-OLED library
 ; Written by Tony Hefner
@@ -46,88 +46,98 @@
                 br  start             ; Jump past build info to code
 
 ; Build information                   
-binfo:          db  3+80h         ; Month, 80H offset means extended info
-                db  13            ; Day
-                dw  2023          ; Year
+binfo:          db  2+80h         ; Month, 80H offset means extended info
+                db  7             ; Day
+                dw  2024          ; Year
 
 ; Current build number
-build:          dw  2
+build:          dw  4
 
 ; Must end with 0 (null)
-copyright:      db      'Copyright (c) 2023 by Gaston Williams',0
+copyright:      db      'Copyright (c) 2024 by Gaston Williams',0
                   
-start:          lda  ra               ; move past any spaces
-                smi  ' '
-                bz   start
-                dec  ra               ; move back to non-space character
-                lda  ra               ; check for nonzero byte
-                lbz  check            ; jump if no arguments
-                smi  '-'              ; check for argument
+start:          lda   ra              ; move past any spaces
+                smi   ' '
+                bz    start
+                dec   ra              ; move back to non-space character
+                lda   ra              ; check for nonzero byte
+                lbz   check           ; jump if no arguments
+                smi   '-'             ; check for argument
                 lbnz  bad_arg
-                ldn  ra               ; check for correct argument
-                smi  'u'
-                lbz  unload           ; unload video driver
-                lbr  bad_arg          ; anything else is a bad argument
+                ldn   ra              ; check for correct argument
+                smi   'u'
+                lbz   unload          ; unload video driver
+                lbr   bad_arg         ; anything else is a bad argument
                       
-check:          LOAD rd, O_VIDEO      ; check if video driver is  loaded 
-                lda  rd               ; get the vector long jump command
-                smi  0C0h             ; if not long jump, assume never loaded
-                lbnz load            
-                lda  rd               ; get hi byte of address
-                smi  05h              ; check to see if points to Kernel return
-                lbnz already          ; if not, assume driver is already loaded
-                ldn  rd               ; get the lo byte of address
-                smi  01bh             ; check to see if points to kernel return 
-                lbnz already          ; if not, assume driver is already loaded                    
+check:          LOAD  rd, O_VIDEO     ; check if video driver is  loaded 
+                lda   rd              ; get the vector long jump command
+                smi   0C0h            ; if not long jump, assume never loaded
+                lbnz  load            
+                lda   rd              ; get hi byte of address
+                smi   03h             ; check to see if points to Kernel return
+                lbnz  already         ; if not, assume driver is already loaded
+                ldn   rd              ; get the lo byte of address
+                smi   07eh            ; check to see if points to kernel return 
+                lbnz  already         ; if not, assume driver is already loaded                    
                                   
-load:           LOAD rc, END_DRIVER - BEGIN_DRIVER        ; load block size
-                LOAD R7, 0FF44H       ; page aligned (FF) & named permanent (44) 
-                CALL O_ALLOC          ; Call Elf/OS allocation routine
+load:           LOAD  rc, END_DRIVER - BEGIN_DRIVER        ; load block size
+                LOAD  R7, 0FF44H      ; page aligned (FF) & named permanent (44) 
+                CALL  O_ALLOC         ; Call Elf/OS allocation routine
 
-                lbdf fail             ; DF = 1 means Elf/OS can't allocate block                                                                  
-                LOAD rd, O_VIDEO      ; save video buffer page in kernel
-                ldi  0c0h             ; 'C0' is lbr to video driver address
-                str  rd               ; save long jump instruction in kernel
-                inc  rd               ; move to address for long jump
-                ghi  rf               ; rf has address of allocated block
-                str  rd               ; save hi byte in kernel vector
-                inc  rd               ; move to lo byte of address                                                              
-                glo  rf               ; save lo byte in kernel vector
-                str  rd
-                inc  rd
+                lbdf  fail            ; DF = 1 means Elf/OS can't allocate block                                                                  
+                LOAD  rd, O_VIDEO     ; save video buffer page in kernel
+                ldi   0c0h            ; 'C0' is lbr to video driver address
+                str   rd              ; save long jump instruction in kernel
+                inc   rd              ; move to address for long jump
+                ghi   rf              ; rf has address of allocated block
+                str   rd              ; save hi byte in kernel vector
+                inc   rd              ; move to lo byte of address                                                              
+                glo   rf              ; save lo byte in kernel vector
+                str   rd
+                inc   rd
                                     
-                COPY rf, rd           ; move destination in rf into rd               
-                LOAD rf, BEGIN_DRIVER ; rf points to source driver code
-                ; RC already has the count of bytes allocated
-                ; LOAD rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
-                CALL f_memcpy         ; copy the video driver into memory
-
-                lbr  done             ; we're done!
+                COPY  rf, rd          ; move destination in rf into rd               
+                LOAD  rf, BEGIN_DRIVER  ; rf points to source driver code
+                ; RC has the count of bytes actually allocated
+                push  rc 
+                LOAD  rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
+                CALL  f_memcpy        ; copy the video driver into memory
+                ; RD points to next byte after copied block
+                pop   rc              ; restore size count
+                load  rb, END_DRIVER - BEGIN_DRIVER  ; load code block size
+                SUB16 rc,rb           ; rc = rc - rb = allocated size - code size
+pad:            glo   rc              ; check for remaining bytes (always less than 256)
+                lbz   done            ; if rc.0 = 0, we're done
+                ldi   0
+                str   rd              ; zero out extra bytes
+                inc   rd
+                dec   rc              ; count down              
+                lbr   pad             ; repeat until we're done!
                                                                                                
-unload:         LOAD rd, O_VIDEO+1    ; point rd to video driver vector in kernel
-                lda  rd               ; get hi byte
-                phi  rf
-                ldn  rd               ; get lo byte
-                plo  rf               ; rf points to video driver in memory
-                CALL O_DEALLOC        ; De-alloc memory to unload video driver
+unload:         LOAD  rd, O_VIDEO+1   ; point rd to video driver vector in kernel
+                lda   rd              ; get hi byte
+                phi   rf
+                ldn   rd              ; get lo byte
+                plo   rf              ; rf points to video driver in memory
+                CALL  O_DEALLOC       ; De-alloc memory to unload video driver
                 
                                       ; Dealloc always works
-                LOAD rd, O_VIDEO+1    ; point rd back to hi byte of address
-                ldi  05h              ; point O_VIDEO to kernel return at 051Bh
-                str  rd
-                inc  rd               ; advance to lo byte of address
-                ldi  01bh             ; point O_VIDEO to kernel return at 051Bh
-                str  rd
-                LOAD rf, removed      ; show message that driver was unloaded
-                CALL O_MSG 
+                LOAD  rd, O_VIDEO+1   ; point rd back to hi byte of address
+                ldi   03h             ; point O_VIDEO to kernel return at 037eh
+                str   rd
+                inc   rd              ; advance to lo byte of address
+                ldi   07eh            ; point O_VIDEO to kernel return at 037eh
+                str   rd
+                LOAD  rf, removed     ; show message that driver was unloaded
+                CALL  O_MSG 
                 RTN                   ; return to Elf/OS
                 
-done:           LOAD rf, loaded       ; show message that driver is loaded
-                CALL O_MSG 
-                LOAD rf, copyright
-                CALL O_MSG
-                LOAD rf, crlf
-                CALL O_MSG    
+done:           LOAD  rf, loaded      ; show message that driver is loaded
+                CALL  O_MSG 
+                LOAD  rf, copyright
+                CALL  O_MSG
+                LOAD  rf, crlf
+                CALL  O_MSG    
                 RTN                   ; return to Elf/OS 
                       
                       org 2100h       ; make sure to start driver on page boundary

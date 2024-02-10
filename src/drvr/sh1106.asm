@@ -2,7 +2,7 @@
 ; sh1106 - a video driver for updating a SH1106 OLED display via
 ; the SPI Expansion Board for the 1802/Mini Computer. 
 ;
-; Copyright 2023 by Gaston Williams
+; Copyright 2024 by Gaston Williams
 ;
 ; Based on code from the Elf-Elfos-OLED library
 ; Written by Tony Hefner
@@ -46,15 +46,15 @@
                 br  start             ; Jump past build info to code
 
 ; Build information                   
-binfo:          db  3+80h         ; Month, 80H offset means extended info
-                db  13            ; Day
-                dw  2023          ; Year
+binfo:          db  2+80h         ; Month, 80H offset means extended info
+                db  7             ; Day
+                dw  2024          ; Year
 
 ; Current build number
-build:          dw  2
+build:          dw  4
 
 ; Must end with 0 (null)
-copyright:      db      'Copyright (c) 2023 by Gaston Williams',0
+copyright:      db      'Copyright (c) 2024 by Gaston Williams',0
                   
 start:          lda  ra               ; move past any spaces
                 smi  ' '
@@ -74,10 +74,10 @@ check:          LOAD rd, O_VIDEO      ; check if video driver is  loaded
                 smi  0C0h             ; if not long jump, assume never loaded
                 lbnz load            
                 lda  rd               ; get hi byte of address
-                smi  05h              ; check to see if points to Kernel return
+                smi  03h              ; check to see if points to Kernel return
                 lbnz already          ; if not, assume driver is already loaded
                 ldn  rd               ; get the lo byte of address
-                smi  01bh             ; check to see if points to kernel return 
+                smi  07eh             ; check to see if points to kernel return 
                 lbnz already          ; if not, assume driver is already loaded                    
                                   
 load:           LOAD rc, END_DRIVER - BEGIN_DRIVER        ; load block size
@@ -98,12 +98,22 @@ load:           LOAD rc, END_DRIVER - BEGIN_DRIVER        ; load block size
                                     
                 COPY rf, rd           ; move destination in rf into rd               
                 LOAD rf, BEGIN_DRIVER ; rf points to source driver code
-                ; RC already has the count of bytes allocated
-                ; LOAD rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
+                ; RC has the count of bytes allocated
+                push  rc 
+                LOAD rc, END_DRIVER - BEGIN_DRIVER  ; load block size to move
                 CALL f_memcpy         ; copy the video driver into memory
-
-                lbr  done             ; we're done!
-                                                                                               
+                ; RD points to next byte after copied block
+                pop   rc              ; restore size count
+                load  rb, END_DRIVER - BEGIN_DRIVER  ; load code block size
+                SUB16 rc,rb           ; rc = rc - rb = allocated size - code size
+pad:            glo   rc              ; check for remaining bytes (always less than 256)
+                lbz   done            ; if rc.0 = 0, we're done
+                ldi   0
+                str   rd              ; zero out extra bytes
+                inc   rd
+                dec   rc              ; count down              
+                lbr   pad             ; repeat until we're done!
+                                                             
 unload:         LOAD rd, O_VIDEO+1    ; point rd to video driver vector in kernel
                 lda  rd               ; get hi byte
                 phi  rf
@@ -113,10 +123,10 @@ unload:         LOAD rd, O_VIDEO+1    ; point rd to video driver vector in kerne
                 
                                       ; Dealloc always works
                 LOAD rd, O_VIDEO+1    ; point rd back to hi byte of address
-                ldi  05h              ; point O_VIDEO to kernel return at 051Bh
+                ldi  03h              ; point O_VIDEO to kernel return at 037eh
                 str  rd
                 inc  rd               ; advance to lo byte of address
-                ldi  01bh             ; point O_VIDEO to kernel return at 051Bh
+                ldi  07eh             ; point O_VIDEO to kernel return at 037eh
                 str  rd
                 LOAD rf, removed      ; show message that driver was unloaded
                 CALL O_MSG 

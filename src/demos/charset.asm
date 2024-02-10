@@ -83,6 +83,9 @@ good:       call  oled_check_driver
             ldn    rf
             plo    r9
           
+            ldi   0                     ; set for no scaling 
+            phi   r8
+
             load  r7, 0                 ;---- Set R7 at origin (0,0)
             ldi   ' '                   ; set up first character
             plo   r8

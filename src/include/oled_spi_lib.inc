@@ -7,11 +7,20 @@
 
 
 ;-----------------------------------
-; Public Text constants
+; Public Text color style constants
 ;-----------------------------------
 #define GFX_TXT_NORMAL    $01
 #define GFX_TXT_INVERSE   $00
 #define GFX_TXT_OVERLAY   $80
+
+;-----------------------------------
+; Public Text size constants
+;-----------------------------------
+#define GFX_TXT_DEFAULT  $00
+#define GFX_TXT_SMALL    $01
+#define GFX_TXT_MEDIUM   $02
+#define GFX_TXT_LARGE    $04
+#define GFX_TXT_HUGE     $08
 
 ;-------------------------------------------------------------------------------
 ; OLED public routines

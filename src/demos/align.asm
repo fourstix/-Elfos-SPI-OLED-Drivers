@@ -163,15 +163,42 @@ good:       call  oled_check_driver
             call  gfx_draw_rect
             lbdf  error
 
+            ; draw a few blocks
+            load  r7, $0C20
+            load  r8, $0101
+            ldi   GFX_SET
+            phi   r9
+            call  gfx_fill_rect
+            lbdf  error
+            
+
+            ; draw a few blocks
+            load  r7, $0C24
+            load  r8, $0202
+            ldi   GFX_SET
+            phi   r9
+            call  gfx_fill_rect
+            lbdf  error
+
+            ; draw a few blocks
+            load  r7, $0C2C
+            load  r8, $0404
+            ldi   GFX_SET
+            phi   r9
+            call  gfx_fill_rect
+            lbdf  error
 
             ;---- draw inverse text wrapping around with background set
             
-            load  r7, $2A00             ;---- Set R7 at beginning of line 26
-            ldi   GFX_TXT_INVERSE       ; background set, text cleared
-            phi   r9    
-            load  rf, tst_text          ;---- set string buffer
+;            load  r7, $2A00             ;---- Set R7 at beginning of line 26
+;            ldi   GFX_TXT_INVERSE       ; background set, text cleared
+;            phi   r9    
+;            ldi   0                     ; set for no character scaling 
+;            phi   r8
+
+;            load  rf, tst_text          ;---- set string buffer
             
-            call  oled_print_string
+;            call  oled_print_string
             
 show:       call  oled_init_display     ; setup the display
             call  oled_update_display   ; update the display
@@ -188,7 +215,7 @@ error:      call o_inmsg
             db 'Error drawing string.',10,13,0
             abend                       ; return to Elf/OS with an error code
             
-tst_text:   db 'This is a long string that wraps around!',0
+tst_text:   db 'This is a long string... It wraps around!',0
 
             ;---- rotation flag
 rotate:     db 0            

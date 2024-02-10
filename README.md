@@ -112,8 +112,20 @@ GFX 1802 Graphics Library
 -------------------------
 The common [GFX 1802 Graphics Library](https://github.com/fourstix/GFX-1802-Library) is available in the [GFX 1802 Library](https://github.com/fourstix/GFX-1802-Library) repository.
 
+
 OLED Demo Programs
 ------------------
+
+<table class="table table-hover table-striped table-bordered">
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/spaceship.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/show_imp.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Spaceship Demo</td>
+   <td >Show Imp Demo</td>
+  </tr> 
+</table>
 
 The appropriate OLED display driver should be loaded before running these programs. 
 
@@ -135,6 +147,37 @@ Show the classic Elf spaceship program graphic on the display.
  
 OLED Graphics Demos
 -------------------
+
+<table class="table table-hover table-striped table-bordered">
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/bitmaps.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/lines.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Bitmaps Demo</td>
+   <td >Lines Demo</td>
+  </tr> 
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/tao.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/triangles.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Tao Demo</td>
+   <td >Triangles Demo</td>
+  </tr>
+  <tr align="center">
+   <td >Bitmaps Demo</td>
+   <td >Lines Demo</td>
+  </tr> 
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/charset.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/textbg.jpg"></td> 
+  </tr>
+  <tr align="center">
+   <td >Charset Demo</td>
+   <td >Textbg Demo</td>
+  </tr>  
+</table>
 
 These programs use the [Common GFX 1802 library.](https://github.com/fourstix/GFX-1802-Library) and the [OLED SPI graphics device library](OLED-SPI-GFX.md) to write to the display through the appropriate OLED video driver.  They all support rotation of the display through the -r option.
 
@@ -176,7 +219,7 @@ Draws the printable ASCII character set on the display. The option -r n, where n
 
 ## helloworld
 **Usage:** helloworld [-r 0|1|2|3]
-Draws the classic text greeting on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+Draws the classic text greeting on the display in small text.  Followed by a response in large text. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 ## textbg
 **Usage:** textbg [-r 0|1|2|3]
@@ -185,6 +228,14 @@ Draws text strings on the display, using the normal, inverse and overlay text op
 ## align
 **Usage:** align [-r 0|1|2|3]
 Draws a set of lines and rectangles with an inverse text string on the display to show the pixel alignment. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+
+## tao
+**Usage:** tao [-r 0|1|2|3]
+Draws a yin yang symbol on the display to show the circle and arc functions. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
+
+## triangles
+**Usage:** triangles [-r 0|1|2|3]
+Draws a set of triangles on the display. The option -r n, where n = 0,1,2 or 3, will rotate the display n*90 degrees counter-clockwise.
 
 Repository Contents
 -------------------
@@ -227,10 +278,12 @@ Repository Contents
   * reversed.asm - Demo program to draw lines in a reversed pattern (black on white) on the display screen.
   * snowflakes.asm - Demo program to draw falling snowflake bitmaps on the display screen.
   * charset.asm - Demo program to draw the printable ASCII character set on the display screen.
-  * helloworld.asm - Demo program to draw the classic greeting on the display screen.
+  * helloworld.asm - Demo program to draw the classic greeting and a response on the display screen.
   * textbg.asm - Demo program to draw text with normal, inverse and overlay options on the display screen.
   * direct.asm - Demo program to directly write pattern bytes to the display.
-  * align.asm - Demo program to draw lines, rectangles and inverset text to show pixel alignment.
+  * align.asm - Demo program to draw lines, rectangles and inverse text to show pixel alignment.
+  * tao - Demo program to draw a yin yang symbol on the display.
+  * triangles - Demo program to draw a set of triangles on the display.
   * build.bat - Windows batch file to assemble and link the sh1106 programs. Replace [Your_Path] with the correct path information for your system.
   * clean.bat - Windows batch file to delete assembled binaries and their associated files.
 * **/bin/demo/**  -- Binary files for OLED display driver demo programs.

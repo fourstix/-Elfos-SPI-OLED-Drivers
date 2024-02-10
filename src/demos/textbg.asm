@@ -129,14 +129,17 @@ up_rt3:     ldi   GFX_SET
             load  r7, $0819             ;---- Set R7 to overlap block
             ldi   GFX_TXT_OVERLAY       ; background shows through, text inverts bits
             phi   r9              
+            ldi   0                     ; set for no character scaling 
+            phi   r8
             load  rf, overlay
-            
             call  oled_print_string
 
             ;---- draw text with background cleared, text wraps
             load  r7, $2C38             ;---- Set R7 near middle of line 44
             ldi   GFX_TXT_NORMAL        ; background cleared, text set
             phi   r9    
+            ldi   0                     ; set for no character scaling 
+            phi   r8
             load  rf, normal            ;---- set string buffer
             
             call  oled_print_string
@@ -146,6 +149,8 @@ up_rt3:     ldi   GFX_SET
             load  r7, $1A00             ;---- Set R7 at beginning of line 26
             ldi   GFX_TXT_INVERSE       ; background set, text cleared
             phi   r9    
+            ldi   0                     ; set for no character scaling 
+            phi   r8
             load  rf, inverse           ;---- set string buffer
             
             call  oled_print_string
