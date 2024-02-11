@@ -162,8 +162,12 @@ OLED Graphics Demos
    <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/triangles.jpg"></td> 
   </tr>
   <tr align="center">
-   <td >Tao Demo</td>
+   <td >Circles and Arcs Demo</td>
    <td >Triangles Demo</td>
+  </tr>
+  <tr align="center">
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/bitmaps.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/lines.jpg"></td> 
   </tr>
   <tr align="center">
    <td >Bitmaps Demo</td>
@@ -175,7 +179,7 @@ OLED Graphics Demos
   </tr>
   <tr align="center">
    <td >Charset Demo</td>
-   <td >Textbg Demo</td>
+   <td >Text Background Demo</td>
   </tr>  
 </table>
 
