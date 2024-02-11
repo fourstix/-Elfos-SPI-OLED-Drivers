@@ -118,8 +118,8 @@ OLED Demo Programs
 
 <table class="table table-hover table-striped table-bordered">
   <tr align="center">
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/spaceship.jpg"></td>
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/show_imp.jpg"></td> 
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/spaceship.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/show_imp.jpg"></td> 
   </tr>
   <tr align="center">
    <td >Spaceship Demo</td>
@@ -150,16 +150,16 @@ OLED Graphics Demos
 
 <table class="table table-hover table-striped table-bordered">
   <tr align="center">
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/bitmaps.jpg"></td>
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/lines.jpg"></td> 
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/bitmaps.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/lines.jpg"></td> 
   </tr>
   <tr align="center">
    <td >Bitmaps Demo</td>
    <td >Lines Demo</td>
   </tr> 
   <tr align="center">
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/tao.jpg"></td>
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/triangles.jpg"></td> 
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/tao.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/triangles.jpg"></td> 
   </tr>
   <tr align="center">
    <td >Tao Demo</td>
@@ -170,8 +170,8 @@ OLED Graphics Demos
    <td >Lines Demo</td>
   </tr> 
   <tr align="center">
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/charset.jpg"></td>
-   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/b_elfos5/pics/textbg.jpg"></td> 
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/charset.jpg"></td>
+   <td><img width=300 src="https://github.com/fourstix/Elfos-SPI-OLED-Drivers/blob/main/pics/textbg.jpg"></td> 
   </tr>
   <tr align="center">
    <td >Charset Demo</td>
